@@ -1,3 +1,4 @@
+'use client'
 import React, { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,9 +15,9 @@ export default function NavMenu() {
          {name: "Про нас", path: "/about_us"},
          {name: "Послуги", path: "/services"},
          {name: "Авто-товари", path: "/auto_shop"},
-         {name:"Залишити заявку", path: "#"},
-         {name: "Вхід", path: "#"},
-         {name:"Реєстрація", path: "#"}
+         {name:"Залишити заявку", path: "/applay"},
+         {name: "Вхід", path: "/enter"},
+         {name:"Реєстрація", path: "/registry"}
         ];
     const linkStyles: string = "text-gray-600 font-medium transition-colors hover:text-blue-600";
     const activeStyle: string = "text-blue-600 border-b-2 border-blue-600";

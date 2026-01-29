@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import ModalRegistration from "./ModalRegistation";
+import { useRef } from "react";
 
 export default function NavMenu() {
     const currentPath = usePathname();
@@ -21,6 +23,14 @@ export default function NavMenu() {
         ];
     const linkStyles: string = "text-gray-600 font-medium transition-colors hover:text-blue-600";
     const activeStyle: string = "text-blue-600 border-b-2 border-blue-600";
+    const modalRef = useRef<{ openModal: () => void }>(null);
+
+  const handleNavClick = (e: React.MouseEvent, path: string) => {
+    if (path === "/registry") {
+      e.preventDefault(); // Запобігаємо переходу за посиланням
+      modalRef.current?.openModal();
+    }
+  };
     return(
         <Fragment>
             <nav className="bg-white border-b border-gray-200 px-4 py-3">
@@ -30,6 +40,7 @@ export default function NavMenu() {
                         return(
                             <li key={link.path} className="py-4">
                                 <Link 
+                                onClick={(e) => handleNavClick(e, link.path)}
                                 href={link.path} 
                                 className={`${linkStyles} ${isActive ? activeStyle : ''}`}
                                 >
@@ -40,6 +51,7 @@ export default function NavMenu() {
                     })};
                 </ul>
             </nav>
+            <ModalRegistration ref={modalRef}></ModalRegistration>
         </Fragment>
     );
 }

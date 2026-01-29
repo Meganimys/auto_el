@@ -7,11 +7,11 @@ export default function LoadingComponent() {
     const lottieRef = useRef(null);
 
     return(
-    <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-black">
+    <div className="flex h-screen items-center justify-center inset-0 w-screen overflow-hidden bg-black">
         <Lottie
         lottieRef={lottieRef}
         animationData={lottieAnimation}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '10%', height: '10%' }}
         /* preserveAspectRatio визначає, як анімація масштабується */
         rendererSettings={{
           preserveAspectRatio: 'xMidYMid slice', // 'slice' розтягує на весь екран без полів (як cover)

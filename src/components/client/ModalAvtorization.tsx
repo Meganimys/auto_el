@@ -6,7 +6,7 @@ import React, {
   Fragment,
 } from "react";
 
-const ModalRegistration = forwardRef((props, ref) => {
+const ModalAvtorization = forwardRef((prop, ref) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useImperativeHandle(ref, () => ({
@@ -20,6 +20,7 @@ const ModalRegistration = forwardRef((props, ref) => {
       dialogRef.current?.close();
     }
   };
+
   const dialogStyle: string =
     "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0  border-none bg-transparent outline-none z-50 w-[90vw] md:w-[25%] min-h-[50vh] hidden open:grid place-items-center backdrop:bg-black/50";
   const divStyle: string =
@@ -42,12 +43,11 @@ const ModalRegistration = forwardRef((props, ref) => {
       >
         <div className={divStyle} onClick={(e) => e.stopPropagation()}>
           <form action="" className={formStyle}>
-            <label htmlFor="login-input" className="">
+            <label htmlFor="" className="">
               Введіть логін:
             </label>
             <input
               type="text"
-              id="login-input"
               className={inputTextStyle}
               minLength={3}
               maxLength={20}
@@ -56,53 +56,26 @@ const ModalRegistration = forwardRef((props, ref) => {
               title="Логін не може бути коротшим за 3 літери"
               required
             />
-            <label htmlFor="email-input" className="">
-              Введіть свою електронну пошту:
-            </label>
-            <input
-              type="email"
-              id="email-input"
-              className={inputTextStyle}
-              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-              title="Введіть корректну пошту в форматі domain@domain.name"
-              required
-              placeholder="Enter you email"
-            />
-            <label htmlFor="password-input" className="">
+            <label htmlFor="" className="">
               Введіть пароль:
             </label>
             <input
               type="password"
-              id="password-input"
               className={inputTextStyle}
               minLength={6}
               maxLength={25}
-              pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+]).+$"
+              pattern="(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=]).+"
               title="Пароль має містити велику літеру, цифру та спецсимвол"
               required
               placeholder="Enter your password"
             />
-            <label htmlFor="password-repeat-input" className="">
-              Введіть пароль повторно:
-            </label>
-            <input
-              type="password"
-              id="password-repeat-input"
-              className={inputTextStyle}
-              minLength={6}
-              maxLength={25}
-              pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+]).+$"
-              title="Пароль має містити велику літеру, цифру та спецсимвол"
-              required
-              placeholder="Repeat your password"
-            />
             <button type="submit" className={submitButtonStyle}>
-              Зареєструватися
+              Увійти
             </button>
             <button
               type="button"
-              onClick={() => dialogRef.current?.close()}
               className={closeDialogButtonStyle}
+              onClick={() => dialogRef.current?.close()}
             >
               x
             </button>
@@ -113,5 +86,5 @@ const ModalRegistration = forwardRef((props, ref) => {
   );
 });
 
-ModalRegistration.displayName = "ModalRegistration";
-export default ModalRegistration;
+ModalAvtorization.displayName = "ModalAvtorization";
+export default ModalAvtorization;

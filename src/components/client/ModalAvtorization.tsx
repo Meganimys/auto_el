@@ -22,7 +22,7 @@ const ModalAvtorization = forwardRef((prop, ref) => {
   };
 
   const dialogStyle: string =
-    "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0  border-none bg-transparent outline-none z-50 w-[90vw] md:w-[25%] min-h-[50vh] hidden open:grid place-items-center backdrop:bg-black/50";
+    "overflow-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0  border-none bg-transparent outline-none z-50 w-[90vw] md:w-[25%] min-h-[50vh] hidden open:grid place-items-center backdrop:bg-black/50";
   const divStyle: string =
     "w-[25vw] min-w-[320px] font-bold p-6 bg-[#fffaf0] grid place-items-center rounded-[20px] border-2 border-yellow-800";
   const inputTextStyle: string =

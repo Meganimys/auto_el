@@ -17,7 +17,7 @@ export default function NavMenu() {
 
   const navItem: navObj[] = [
     { name: "Про нас", path: "#about_us" },
-    { name: "Послуги", path: "/services" },
+    { name: "Послуги", path: "#services" },
     { name: "Авто-товари", path: "/auto_shop" },
     { name: "Залишити заявку", path: "/applay" },
     { name: "Вхід", path: "/enter" },

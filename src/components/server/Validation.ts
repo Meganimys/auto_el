@@ -12,7 +12,7 @@ export function isCorrectPassLength(pass:string) {
 }
 
 export function isCorrectLogin(login:string) {
-    const regex = /[a-zA-Z0-9_-]+/;
+    const regex = /^[a-zA-Z0-9_-]+$/;
     return regex.test(login);
 }
 
@@ -26,7 +26,7 @@ export async function isFreeLogin(login:string) {
 }
 
 export function isCorrectEmail(email:string) {
-    const regex = /a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+    const regex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
     return regex.test(email);
 }
 

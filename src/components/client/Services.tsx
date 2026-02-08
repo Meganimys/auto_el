@@ -74,17 +74,17 @@ export default function Services() {
 
   return (
     <section id="services" className="w-full max-w-8xl mx-auto p-4 md:p-10 font-sans">
-      <div className="flex flex-col md:flex-row w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+      <div className="flex flex-col md:flex-row w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-500">
         
         {/* ЛІВА ЧАСТИНА (Категорії) */}
-        <div className="w-full md:w-2/5 lg:w-1/3 flex flex-col border-r border-slate-100 bg-slate-50/30">
+        <div className="w-full md:w-2/5 lg:w-1/3 flex flex-col border-r border-slate-500 bg-black bg-blend-color-burn">
           {autoServiceList.map((item) => {
             const isActive = activeTab === item.id;
             return (
-              <div key={item.id} className="flex flex-col border-b border-slate-100 last:border-none">
+              <div key={item.id} className="flex flex-col border-b border-slate-500 last:border-none">
                 <div
                   className={`relative p-5 md:p-6 cursor-pointer flex items-center justify-between transition-all duration-300 ${
-                    isActive ? "bg-white" : "hover:bg-slate-100/50"
+                    isActive ? "bg-white" : "hover:bg-slate-100/10"
                   }`}
                   onClick={() => setActiveTab(isActive ? null : item.id)}
                 >
@@ -125,7 +125,7 @@ export default function Services() {
                         className="bg-white px-12 pb-4 overflow-hidden"
                       >
                         {item.services.map((s) => (
-                          <motion.li key={s.id} variants={itemVariants} className="py-3 text-slate-600 border-b border-slate-50 last:border-none text-base">
+                          <motion.li key={s.id} variants={itemVariants} className="py-3 text-slate-600 border-b-2 border-slate-50 last:border-none text-base">
                             • {s.name}
                           </motion.li>
                         ))}
@@ -163,7 +163,7 @@ export default function Services() {
                     <motion.li
                       key={service.id}
                       variants={itemVariants}
-                      className="group flex items-center p-4 rounded-xl border border-slate-100 hover:border-red-100 hover:bg-red-50/30 transition-all duration-300"
+                      className="group flex items-center p-4 rounded-xl border-2 border-slate-100 hover:border-red-100 hover:bg-red-50/30 transition-all duration-300"
                     >
                       <div className="w-2 h-2 rounded-full bg-red-700 mr-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                       <span className="text-lg text-slate-700 group-hover:text-slate-900 font-medium">

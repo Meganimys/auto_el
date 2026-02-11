@@ -46,7 +46,7 @@ export default function NavMenu() {
 
   return (
     <Fragment>
-      <nav className="fixed h-25 top-0 w-full bg-[#4b0082]/50 border-b border-[#800080] pr-4 z-50">
+      <nav className="sticky mt-25 h-25 top-0 w-full rounded-xl bg-[#4b0082]/50 border-b border-[#800080] pr-4 z-50">
         {/* Контейнер, який ділить простір на 3 частини */}
         <div className="flex items-center justify-between w-full mx-auto min-h-full max-h-full">
           

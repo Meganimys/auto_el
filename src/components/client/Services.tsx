@@ -73,7 +73,7 @@ export default function Services() {
   ];
 
   return (
-    <section id="services" className="w-full max-w-8xl mx-auto p-4 md:p-10 font-sans">
+    <section id="services" className="w-full max-w-8xl mx-auto p-4 md:p-10 font-sans bg-black">
       <div className="flex flex-col md:flex-row w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-500">
         
         {/* ЛІВА ЧАСТИНА (Категорії) */}

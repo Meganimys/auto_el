@@ -11,10 +11,10 @@ export default function LoadingComponent() {
         <Lottie
         lottieRef={lottieRef}
         animationData={lottieAnimation}
-        style={{ width: '10%', height: '10%' }}
+        style={{ width: '20%', height: '20%' }}
         /* preserveAspectRatio визначає, як анімація масштабується */
         rendererSettings={{
-          preserveAspectRatio: 'xMidYMid slice', // 'slice' розтягує на весь екран без полів (як cover)
+          preserveAspectRatio: 'xMidYMid meet', // 'slice' розтягує на весь екран без полів (як cover)
         }}
       />
     </div>

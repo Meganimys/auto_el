@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
 export default function Footer() {
-  const [currentData, setCurrentData] = useState(new Date());
+  const [currentData, setCurrentData] = useState<Date | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => setCurrentData(new Date()), 1000);
@@ -58,7 +58,7 @@ export default function Footer() {
               className="hover:underline"
               id="footer-menu"
             >
-              Документи
+              Питання та відповіді
             </Link>
             <p className="" id="footer-menu">
               © ТОВ AEL - Auto-El-Sancho
@@ -103,9 +103,9 @@ export default function Footer() {
         </section>
         <p className="font-bold italic text-center py-5">AUTO-EL-SANCHO</p>
         <data value="" className="block text-center w-full py-5">
-          {currentData.toLocaleDateString() +
-            " " +
-            currentData.toLocaleTimeString()}
+          {currentData 
+    ? `${currentData.toLocaleDateString()} ${currentData.toLocaleTimeString()}` 
+    : "Завантаження..."}
         </data>
       </footer>
     </Fragment>

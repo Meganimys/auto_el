@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js" 
+  // Полностью удалите строку output
+}
+
+
+// prisma/schema.prisma
+datasource db {
+  provider  = "postgresql"
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+//tables
+model Product {
+  id          Int            @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  category    String
+  // Связь: один товар имеет список изображений
+  images      ProductImage[] 
+  createdAt   DateTime       @default(now())
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  url       String  // Ссылка на фото
+  productId Int     // ID товара, к которому привязано фото
+  // Настройка связи: при удалении товара удаляются и его фото (onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}

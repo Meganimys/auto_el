@@ -33,3 +33,8 @@ body {
 #error-button:hover {
   opacity: 0.8; /* Легке розмиття без зміни розмірів */
 }
+
+option {
+  color: #0a0a0a;
+  background-color: #ffffff;
+}

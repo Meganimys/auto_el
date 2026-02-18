@@ -1,10 +1,9 @@
 "use client";
 
-import { PackageSearch } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { use } from "react";
-import { useRouter } from "next/navigation";
+import SearchForm from "@/components/client/SearchForm";
 
 interface CategoryProps {
   params: Promise<{ slugs: string[] }>;
@@ -114,13 +113,11 @@ const autoShopLinks: {
   },
 ];
 
-const unCategory = [];
 export default function CategoryPage({ params }: CategoryProps) {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const page = searchParams.get("page") || "1";
   const { slugs } = use(params);
-  const router = useRouter();
 
   // Знаходимо основну категорію за ID
   const currentMainCategory = autoShopLinks.find(
@@ -134,10 +131,6 @@ export default function CategoryPage({ params }: CategoryProps) {
     subCatIndex !== undefined && subCatIndex !== -1
       ? currentMainCategory?.uncategory[subCatIndex]
       : "Категорія";
-    const searchItems = (FormData: FormData
-    ) => {
-      router.push(`/auto_shop/search?query=${FormData.get("search")}&page=1`);
-    }
   return (
     <div className="py-8 relative">
       {/* Додаємо flex та justify-between, щоб рознести елементи по боках */}
@@ -149,58 +142,42 @@ export default function CategoryPage({ params }: CategoryProps) {
           </Link>
           {" > "}
           {slugs.map((slug, index) => {
-  const isLast = index === slugs.length - 1;
-  
-  // 1. Визначаємо початкове ім'я (якщо slug це "search", то "Пошук", інакше сам slug)
-  let displayName: string = slug;
+            const isLast = index === slugs.length - 1;
 
-  // 2. Шукаємо індекс у вашому масиві
-  const subCatIndex = currentMainCategory?.uncategoryUrl.findIndex(
-    (url) => url.includes(slug)
-  );
+            // 1. Визначаємо початкове ім'я (якщо slug це "search", то "Пошук", інакше сам slug)
+            let displayName: string = slug;
 
-  // 3. Якщо індекс знайдено, беремо назву з масиву uncategory. 
-  // Додаємо "?? slug", щоб гарантувати тип string, якщо раптом у масиві буде undefined
-  if (subCatIndex !== undefined && subCatIndex !== -1) {
-    displayName = currentMainCategory?.uncategory[subCatIndex] ?? slug;
-  }
+            // 2. Шукаємо індекс у вашому масиві
+            const subCatIndex = currentMainCategory?.uncategoryUrl.findIndex(
+              (url) => url.includes(slug),
+            );
 
-  return isLast ? (
-    <span key={index} className="text-gray-500">
-      {displayName}
-    </span>
-  ) : (
-    <span key={index} className="flex items-center gap-2">
-      <Link
-        className="hover:underline text-blue-600"
-        href={`/auto_shop/${slug}?id=${id}`}
-      >
-        {displayName}
-      </Link>
-      {" > "}
-    </span>
-  );
-})}
+            // 3. Якщо індекс знайдено, беремо назву з масиву uncategory.
+            // Додаємо "?? slug", щоб гарантувати тип string, якщо раптом у масиві буде undefined
+            if (subCatIndex !== undefined && subCatIndex !== -1) {
+              displayName =
+                currentMainCategory?.uncategory[subCatIndex] ?? slug;
+            }
 
+            return isLast ? (
+              <span key={index} className="text-gray-500">
+                {displayName}
+              </span>
+            ) : (
+              <span key={index} className="flex items-center gap-2">
+                <Link
+                  className="hover:underline text-blue-600"
+                  href={`/auto_shop/${slug}?id=${id}`}
+                >
+                  {displayName}
+                </Link>
+                {" > "}
+              </span>
+            );
+          })}
         </h2>
 
-        {/* Форма: видалено absolute, додано відносне позиціонування для іконки */}
-        <form action={searchItems} className="relative flex items-center min-w-75">
-          <input
-            type="search"
-            name="search"
-            placeholder="Пошук..."
-            className="p-2 border rounded w-full pr-10 focus:text-green-700"
-          />
-          {/* Іконка тепер прикріплена до інпуту всередині флекс-контейнера */}
-          <PackageSearch className="absolute right-25 top-1/2 -translate-y-1/2 text-gray-400" />
-          <button
-            className="ml-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-            type="submit"
-          >
-            Пошук
-          </button>
-        </form>
+        <SearchForm initialQuery=""></SearchForm>
       </div>
 
       {/* Заголовки нижче */}

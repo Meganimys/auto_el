@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { Fragment } from "react/jsx-runtime";
+import { useRouter } from "next/navigation";
 
 export default function AutoShop() {
 
   const [visibleId, setVisibleId] = useState<number|null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const router = useRouter();
+  const isAdmin = true; // Змінна для перевірки прав адміністратора
 
   const handleMouseEnter = (id: number) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -181,6 +183,7 @@ const handleMouseLeave = () => {
 </ul>
 
       }
+      {isAdmin && <button className="bg-red-500 block mx-auto my-20 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors" onClick={() => {router.push('/control/add_item')}} type="button">Додати товар</button>}
     </div>
   );
 }

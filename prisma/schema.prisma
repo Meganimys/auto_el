@@ -24,6 +24,7 @@ model Product {
   description String?
   price       Float
   category    String
+  productType String
   // Связь: один товар имеет список изображений
   images      ProductImage[] 
   createdAt   DateTime       @default(now())

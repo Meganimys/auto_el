@@ -10,6 +10,9 @@ export async function saveProductToDatabase(formData: FormData) {
     const item_type = formData.get("item_type") as string;
     const item_description = formData.get("item_description") as string;
     const item_gallery = formData.getAll("item_gallery") as File[];
+    const item_manufacturer = formData.get("item_manufacturer") as string | null;
+    const item_model = formData.get("item_model") as string | null;
+    const item_year = formData.get("item_year") as string | null;
 
     const result = await handleImageUpload(item_gallery);
 
@@ -23,6 +26,9 @@ export async function saveProductToDatabase(formData: FormData) {
                     category: item_category || "Без категорії",
                     productType: item_type || "Без типу",
                     description: item_description,
+                    manufacturer: item_manufacturer,
+                    model: item_model,
+                    createYear: item_year,
                     images: {
                         create: result.urls.map(url => ({ url }))
                     }

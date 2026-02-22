@@ -22,10 +22,14 @@ model Product {
   id          Int            @id @default(autoincrement())
   name        String
   description String?
+  model       String
+  manufacturer      String
+  createYear  String
   price       Float
-  category    String
-  productType String
-  // Связь: один товар имеет список изображений
+  categoryId    Int
+  category      ProductCategory @relation(fields: [categoryId], references: [id])
+  typeId        Int
+  productType   ProductType     @relation(fields: [typeId], references: [id])
   images      ProductImage[] 
   createdAt   DateTime       @default(now())
 }
@@ -36,4 +40,21 @@ model ProductImage {
   productId Int     // ID товара, к которому привязано фото
   // Настройка связи: при удалении товара удаляются и его фото (onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductCategory {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  types     ProductType[]
+  products  Product[]
+}
+
+model ProductType {
+  id        Int    @id @default(autoincrement())
+  name      String  @unique
+  typeUrl   String  @unique
+  categoryId  Int
+  category    ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  products  Product[]
+  @@unique([name, categoryId])
 }

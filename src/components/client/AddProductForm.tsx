@@ -14,10 +14,7 @@ const AddProductSchema = z.object({
   item_name: z
     .string()
     .min(10, "Назва мінімум 10 символів")
-    .regex(
-      /^[a-zA-Zа-яА-ЯіїєґІЇЄҐ0-9\s]+$/,
-      "Тільки букви, цифри та пробіли"
-    ),
+    .regex(/^[a-zA-Zа-яА-ЯіїєґІЇЄҐ0-9\s]+$/, "Тільки букви, цифри та пробіли"),
 
   item_price: z
     .number()
@@ -27,17 +24,24 @@ const AddProductSchema = z.object({
   item_category: z.string().min(1, "Оберіть категорію"),
   item_type: z.string().min(1, "Оберіть тип"),
 
-  item_description: z
-    .string()
-    .min(100, "Опис мінімум 100 символів"),
+  item_description: z.string().min(100, "Опис мінімум 100 символів"),
 
   // 🔥 БЕЗ SSR ПРОБЛЕМИ
   item_gallery: z
-  .array(z.instanceof(File))
-  .min(1, "Мінімум 1 зображення")
-  .max(5, "Максимум 5 зображень")
-  .refine((files) => files.every((f) => f.type.startsWith("image/")), "Тільки зображення")
-  .refine((files) => files.every((f) => f.size <= 5 * 1024 * 1024), "Максимум 5MB"),
+    .array(z.instanceof(File))
+    .min(1, "Мінімум 1 зображення")
+    .max(5, "Максимум 5 зображень")
+    .refine(
+      (files) => files.every((f) => f.type.startsWith("image/")),
+      "Тільки зображення",
+    )
+    .refine(
+      (files) => files.every((f) => f.size <= 5 * 1024 * 1024),
+      "Максимум 5MB",
+    ),
+  item_manufacturer: z.string().optional(),
+  item_model: z.string().optional(),
+  item_year: z.string().optional(),
 });
 
 type AddProductFormData = z.infer<typeof AddProductSchema>;
@@ -89,57 +93,55 @@ export default function AddProductForm({
 
     const fileArray = Array.from(files).slice(0, 5);
 
-  // Оновлюємо прев'ю
-  imgUrls.forEach((url) => URL.revokeObjectURL(url));
-  const urls = fileArray.map((file) => URL.createObjectURL(file));
+    // Оновлюємо прев'ю
+    imgUrls.forEach((url) => URL.revokeObjectURL(url));
+    const urls = fileArray.map((file) => URL.createObjectURL(file));
 
-  setImgUrls(urls);
+    setImgUrls(urls);
 
-  // ЗАПИСУЄМО МАСИВ У ФОРМУ
-  setValue("item_gallery", fileArray, { 
-    shouldValidate: true, 
-    shouldDirty: true, 
-    shouldTouch: true 
-  });
+    // ЗАПИСУЄМО МАСИВ У ФОРМУ
+    setValue("item_gallery", fileArray, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
 
-  // Примусово перевіряємо
-  trigger("item_gallery"); 
+    // Примусово перевіряємо
+    trigger("item_gallery");
   };
 
   /* ========= SUBMIT ========= */
 
-  const onSubmit: SubmitHandler<AddProductFormData> =
-    async (data) => {
-      const formData = new FormData();
+  const onSubmit: SubmitHandler<AddProductFormData> = async (data) => {
+    const formData = new FormData();
 
-      formData.append("item_name", data.item_name);
-      formData.append(
-        "item_price",
-        data.item_price.toString()
-      );
-      formData.append("item_category", data.item_category);
-      formData.append("item_type", data.item_type);
-      formData.append(
-        "item_description",
-        data.item_description
-      );
+    formData.append("item_name", data.item_name);
+    formData.append("item_price", data.item_price.toString());
+    formData.append("item_category", data.item_category);
+    formData.append("item_type", data.item_type);
+    formData.append("item_description", data.item_description);
+    formData.append("item_manufacturer", data.item_manufacturer || "");
+    formData.append("item_model", data.item_model || "");
+    formData.append("item_year", data.item_year || "");
 
-      Array.from(data.item_gallery as FileList | File[]).forEach((file) => {
-  formData.append("item_gallery", file as File); // Додаємо 'as File'
-});
-      await saveProductToDatabase(formData);
+    Array.from(data.item_gallery as FileList | File[]).forEach((file) => {
+      formData.append("item_gallery", file as File); // Додаємо 'as File'
+    });
+    await saveProductToDatabase(formData);
 
-      reset();
-      setImgUrls([]);
-      setDescription("");
-    };
+    reset();
+    setImgUrls([]);
+    setDescription("");
+  };
 
-  const { ref: galleryRef, ...galleryRest } =
-    register("item_gallery");
-    console.log("Помилки форми:", errors);
+  const { ref: galleryRef, ...galleryRest } = register("item_gallery");
+  console.log("Помилки форми:", errors);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mt-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-4 mt-6"
+    >
       {/* NAME */}
       <input
         {...register("item_name")}
@@ -147,9 +149,7 @@ export default function AddProductForm({
         className="border p-2 min-w-full placeholder-[#ededed] rounded"
       />
       {errors.item_name && (
-        <p className="text-red-500">
-          {errors.item_name.message}
-        </p>
+        <p className="text-red-500">{errors.item_name.message}</p>
       )}
 
       {/* PRICE */}
@@ -162,9 +162,7 @@ export default function AddProductForm({
         className="border p-2 w-full rounded"
       />
       {errors.item_price && (
-        <p className="text-red-500">
-          {errors.item_price.message}
-        </p>
+        <p className="text-red-500">{errors.item_price.message}</p>
       )}
 
       {/* CATEGORY */}
@@ -174,31 +172,46 @@ export default function AddProductForm({
       >
         <option value="">Оберіть</option>
         {categories.map((c) => (
-          <option key={c} value={c}>{c}</option>
+          <option key={c} value={c}>
+            {c}
+          </option>
         ))}
       </select>
       {errors.item_category && (
-        <p className="text-red-500">
-          {errors.item_category.message}
-        </p>
+        <p className="text-red-500">{errors.item_category.message}</p>
       )}
 
       {/* TYPE */}
-      <select
-        {...register("item_type")}
-        className="border p-2 w-full rounded"
-      >
+      <select {...register("item_type")} className="border p-2 w-full rounded">
         <option value="">Оберіть</option>
         {itemTypes.map((t) => (
-          <option key={t} value={t}>{t}</option>
+          <option key={t} value={t}>
+            {t}
+          </option>
         ))}
       </select>
       {errors.item_type && (
-        <p className="text-red-500">
-          {errors.item_type.message}
-        </p>
+        <p className="text-red-500">{errors.item_type.message}</p>
       )}
 
+      <input
+        type="text"
+        className="border p-2 w-full rounded"
+        {...register("item_manufacturer")}
+        placeholder="Виробник"
+      />
+      <input
+        type="text"
+        className="border p-2 w-full rounded"
+        {...register("item_model")}
+        placeholder="Модель"
+      />
+      <input
+        type="text"
+        className="border p-2 w-full rounded"
+        {...register("item_year")}
+        placeholder="Рік випуску"
+      />
       {/* DESCRIPTION */}
       {mounted && (
         <ReactQuillDescriptionInput
@@ -212,9 +225,7 @@ export default function AddProductForm({
         />
       )}
       {errors.item_description && (
-        <p className="text-red-500">
-          {errors.item_description.message}
-        </p>
+        <p className="text-red-500">{errors.item_description.message}</p>
       )}
 
       {/* IMAGE */}
@@ -230,13 +241,14 @@ export default function AddProductForm({
           setIsDragging(false);
           if (!imageInputRef.current) return;
 
-          imageInputRef.current.files =
-            e.dataTransfer.files;
+          imageInputRef.current.files = e.dataTransfer.files;
 
           processFiles(e.dataTransfer.files);
         }}
         className={`border h-50 p-6 grid place-items-center cursor-pointer rounded ${
-          isDragging ? "border-green-500 shadow-md shadow-green-700 text-green-500" : ""
+          isDragging
+            ? "border-green-500 shadow-md shadow-green-700 text-green-500"
+            : ""
         }`}
       >
         Перетягніть або натисніть
@@ -253,16 +265,12 @@ export default function AddProductForm({
           galleryRef(e);
           imageInputRef.current = e;
         }}
-        onChange={(e) =>
-          processFiles(e.target.files)
-        }
+        onChange={(e) => processFiles(e.target.files)}
         id="item_gallery"
       />
 
       {errors.item_gallery && (
-        <p className="text-red-500">
-          {errors.item_gallery.message as string}
-        </p>
+        <p className="text-red-500">{errors.item_gallery.message as string}</p>
       )}
 
       {/* PREVIEW */}

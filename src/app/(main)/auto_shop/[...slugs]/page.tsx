@@ -67,16 +67,20 @@ const autoShopLinks: {
       "Автоаксесуари",
       "Інструменти та обладнання",
       "Аварійний набір",
+      "Автомобільні ключі та домкрати",
+      "Автомобільні ключі керування та сигналізації",
     ],
     uncategoryUrl: [
       "auto_shop/accessories",
       "auto_shop/tools_equipment",
       "auto_shop/emergency_kit",
+      "auto_shop/car_jacks",
+      "auto_shop/car_keys",
     ],
   },
   {
     id: 5,
-    name: "Ходова частина та підвіскаа",
+    name: "Ходова частина та підвіска",
     uncategory: ["Амортизатори", "Пружини", "Рульове управління", "Підшипники"],
     uncategoryUrl: [
       "auto_shop/shock_absorbers",

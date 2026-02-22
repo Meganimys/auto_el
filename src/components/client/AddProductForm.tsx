@@ -46,15 +46,24 @@ const AddProductSchema = z.object({
 
 type AddProductFormData = z.infer<typeof AddProductSchema>;
 
-interface AddProductFormProps {
-  categories: string[];
-  itemTypes: string[];
+interface Category {
+  id: number;
+  name: string;
+}
+
+interface ProductType {
+  id: number;
+  name: string;
+  categoryId: number;
 }
 
 export default function AddProductForm({
   categories,
   itemTypes,
-}: AddProductFormProps) {
+}: {
+  categories: Category[];
+  itemTypes: ProductType[];
+}) {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [description, setDescription] = useState("");
@@ -172,8 +181,8 @@ export default function AddProductForm({
       >
         <option value="">Оберіть</option>
         {categories.map((c) => (
-          <option key={c} value={c}>
-            {c}
+          <option key={c.id} value={c.id}>
+            {c.name}
           </option>
         ))}
       </select>
@@ -185,8 +194,8 @@ export default function AddProductForm({
       <select {...register("item_type")} className="border p-2 w-full rounded">
         <option value="">Оберіть</option>
         {itemTypes.map((t) => (
-          <option key={t} value={t}>
-            {t}
+          <option key={t.id} value={t.id}>
+            {t.name}
           </option>
         ))}
       </select>

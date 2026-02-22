@@ -1,7 +1,6 @@
 'use server';
 
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { put } from '@vercel/blob'
 import { prisma } from "../lib/prisma";
 
 export async function saveProductToDatabase(formData: FormData) {
@@ -44,34 +43,24 @@ export async function saveProductToDatabase(formData: FormData) {
 
 export async function handleImageUpload(item_gallery: File[]) {
     const imageUrls: string[] = [];
-    const uploadDir = path.join(process.cwd(), 'public', 'img', 'product-img');
 
     try {
-        // Створюємо папку, якщо вона ще не існує
-        await mkdir(uploadDir, { recursive: true });
 
         for (const file of item_gallery) {
             // Ваші перевірки
             if (file.size > 0 && file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024) {
                 
-                // Генеруємо унікальне ім'я, щоб уникнути замін файлів
-                const fileName = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
-                const filePath = path.join(uploadDir, fileName);
+                const blob = await put(`product-img/${file.name}`, file, {
+                    access: 'public',
+                    addRandomSuffix: true,
+                    contentType: file.type,
+                });
 
-                // Запис файлу
-                const buffer = Buffer.from(await file.arrayBuffer());
-                await writeFile(filePath, buffer);
+                imageUrls.push(blob.url);
 
-                // Формуємо шлях для бази даних (без public, бо браузер бачить public як корінь /)
-                const dbPath = `/img/product-img/${fileName}`;
-                imageUrls.push(dbPath);
-                
-                console.log("Файл збережено за адресою:", dbPath);
+                console.log("Файл збережено за адресою:", blob.url);
             }
         }
-
-        // Тут ваш код збереження масиву imageUrls в БД
-        // await db.items.create({ data: { images: imageUrls, ... } });
 
         return { success: true, urls: imageUrls };
     } catch (error) {

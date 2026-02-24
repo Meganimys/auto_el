@@ -1,10 +1,11 @@
 "use client";
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import ModalRegistration from "./ModalRegistation";
 import ModalAvtorization from "./ModalAvtorization";
+import ModalUserMenu from "./ModalUserMenu";
 import { useUser, SignedIn, SignedOut } from "@clerk/nextjs";
 
 export default function NavMenu() {
@@ -129,6 +130,12 @@ const openRegAndCloseLogin = () => {
     router.push("/");
   };
 
+  const [isUserModalVisible, setUserModalVisible] = useState<boolean>(false);
+
+  const handleAvatarClick = () => setUserModalVisible(!isUserModalVisible);
+  const handleMouseAvatarOver = () => setUserModalVisible(true);
+  const handleMouseAvatarOut = () => setUserModalVisible(false);
+
   return (
     <Fragment>
       <nav className="sticky mt-25 h-25 top-0 w-full rounded-xl bg-[#4b0082]/50 border-b border-[#800080] pr-4 z-50">
@@ -202,7 +209,7 @@ const openRegAndCloseLogin = () => {
 
           <SignedIn>
           {/* Права картинка */}
-          <div className="flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500">
+          <div className="flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500" onClick={handleAvatarClick} onMouseOver={handleMouseAvatarOver} onMouseOut={handleMouseAvatarOut}>
             <img
               src="/empty-avatar.png"
               alt="right icon"
@@ -211,6 +218,7 @@ const openRegAndCloseLogin = () => {
               className="rounded-[50%] min-h-full min-w-full overflow-hidden object-contain hover:opacity-75 active:opacity-90"
             />
           </div>
+          <ModalUserMenu isVisible={isUserModalVisible}></ModalUserMenu>
           </SignedIn>
         </div>
       </nav>

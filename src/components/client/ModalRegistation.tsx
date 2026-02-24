@@ -93,6 +93,7 @@ const ModalRegistration = forwardRef(
         if (watchLogin.length >= 3 && !errors.login) {
           setIsLoginChecking(true);
           const isTaken = await checkAvailability("login", watchLogin);
+          console.log("Is taken from DB:", isTaken);
           setIsLoginChecking(false);
           if (isTaken) {
             setError("login", {

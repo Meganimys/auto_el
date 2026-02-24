@@ -189,7 +189,7 @@ const dialogStyle: string =
 // 2. В divStyle убираем w-[34vw]. max-h-[90vh] на случай очень маленьких экранов (телефонов), 
 // чтобы модалка не ушла за границы экрана.
 const divStyle: string =
-  "w-[95vw] max-w-[450px] font-bold p-6 md:p-8 text-amber-100 bg-gray-900 flex flex-col items-center rounded-[20px] border-2 border-yellow-800 shadow-2xl overflow-y-auto max-h-[95vh]";
+  "relative w-[95vw] max-w-[450px] font-bold p-6 md:p-8 text-amber-100 bg-gray-900 flex flex-col items-center rounded-[20px] border-2 border-yellow-800 shadow-2xl overflow-y-auto max-h-[95vh]";
 
 // 3. Инпуты должны занимать всю ширину контейнера формы.
 const inputTextStyle: string =
@@ -198,7 +198,7 @@ const inputTextStyle: string =
 // 4. В formStyle меняем grid на flex для более мягкого распределения высоты.
 // max-w-[90%] даёт отступы по бокам внутри divStyle.
 const formStyle: string =
-  "relative w-full max-w-[350px] flex flex-col items-stretch text-center gap-3 py-4";
+  "w-full max-w-[350px] flex flex-col items-stretch text-center gap-3 py-4";
 
 const submitButtonStyle: string =
   "min-h-12 mt-4 bg-purple-700 rounded-xl text-amber-100 font-bold hover:bg-purple-600 active:bg-purple-500 transition-all";
@@ -318,14 +318,14 @@ const closeDialogButtonStyle: string =
               >
                 Вже є акаунт? Увійти
               </Link>
-              <button
+            </form>
+            <button
                 type="button"
                 onClick={() => dialogRef.current?.close()}
                 className={closeDialogButtonStyle}
               >
                 x
               </button>
-            </form>
           </div>
         </dialog>
       </Fragment>

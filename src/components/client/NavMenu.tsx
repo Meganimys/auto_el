@@ -52,7 +52,12 @@ export default function NavMenu() {
         const id = item.path.replace("/#", "");
         const el = document.getElementById(id);
         if (el) observer.observe(el);
+        if (currentPath === "/enter" && modalAvtRef.current) {
+          modalAvtRef.current.openModal();
+        } else if (currentPath === "/registry" && modalRegRef.current) {
+          modalRegRef.current.openModal();
       }
+    }
     });
 
     return () => observer.disconnect();

@@ -100,8 +100,10 @@ const ModalRegistration = forwardRef(
               type: "manual",
               message: "Цей логін вже зайнятий",
             });
+            setIsLoginAvailable(false);
           } else {
             clearErrors("login");
+            setIsLoginAvailable(true);
           }
         }
       }, 500); // Перевірка через 0.5 сек після зупинки вводу
@@ -121,8 +123,10 @@ const ModalRegistration = forwardRef(
               type: "manual",
               message: "Ця електронна пошта вже зайнята",
             });
+            setIsEmailAvailable(false);
           } else {
             clearErrors("email");
+            setIsEmailAvailable(true);
           }
         }
       }, 500); // Перевірка через 0.5 сек після зупинки вводу
@@ -258,9 +262,9 @@ const ModalRegistration = forwardRef(
               )}
 
               {/* Приоритет 3: Логин свободен (только если нет ошибок и проверка завершена) */}
-              {!errors.login && isLoginAvailable && !isEmailChecking && (
+              {!errors.login && isEmailAvailable && !isEmailChecking && (
                 <p className="text-green-500 text-sm mt-1">
-                  ✨ Цей логін вільний!
+                  ✨  Ця пошта вільна!
                 </p>
               )}
               <label htmlFor="password-input" className="">

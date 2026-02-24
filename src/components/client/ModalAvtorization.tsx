@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, {
   useImperativeHandle,
   useRef,
@@ -6,13 +7,16 @@ import React, {
   Fragment,
 } from "react";
 
-const ModalAvtorization = forwardRef((prop, ref) => {
+const ModalAvtorization = forwardRef(({ onSwitchToLogin } : { onSwitchToLogin?: () => void }, ref) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useImperativeHandle(ref, () => ({
     openModal: () => {
       dialogRef.current?.showModal();
     },
+    closeModal: () => {
+      dialogRef.current?.close();
+    }
   }));
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
@@ -72,6 +76,11 @@ const ModalAvtorization = forwardRef((prop, ref) => {
             <button type="submit" className={submitButtonStyle}>
               Увійти
             </button>
+            <Link href="#" onClick={() => {
+              onSwitchToLogin?.();
+            }} className="text-sm text-gray-400 hover:text-gray-200">
+              Немає акаунта? Зареєструватися
+            </Link>
             <button
               type="button"
               className={closeDialogButtonStyle}

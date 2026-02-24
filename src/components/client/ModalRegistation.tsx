@@ -35,7 +35,7 @@ const RegistarionSchema = z.object({
 
 type RegistrationFormData = z.infer<typeof RegistarionSchema>;
 
-const ModalRegistration = forwardRef((props, ref) => {
+const ModalRegistration = forwardRef(({onSwitchToLogin}: {onSwitchToLogin?: () => void}, ref) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegistrationFormData>({
@@ -62,6 +62,9 @@ const ModalRegistration = forwardRef((props, ref) => {
     openModal: () => {
       dialogRef.current?.showModal();
     },
+    closeModal: () => {
+      dialogRef.current?.close();
+    }
   }));
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
@@ -164,7 +167,9 @@ const ModalRegistration = forwardRef((props, ref) => {
             <button type="submit" className={submitButtonStyle}>
               Зареєструватися
             </button>
-            <Link href="/enter" className="text-sm text-gray-400 hover:text-gray-200">
+            <Link href="#" onClick={() => {
+              onSwitchToLogin?.();
+            }} className="text-sm text-gray-400 hover:text-gray-200">
               Вже є акаунт? Увійти
             </Link>
             <button

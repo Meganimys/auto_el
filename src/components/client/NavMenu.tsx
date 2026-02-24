@@ -28,8 +28,8 @@ export default function NavMenu() {
     "text-white-600 font-medium transition-colors hover:text-[#dc143c] text-shadow-md text-shadow-[#000000] active:text-[#9a193b]";
   const activeStyle: string = "text-blue-600 border-b-2 border-blue-600";
 
-  const modalRegRef = useRef<{ openModal: () => void }>(null);
-  const modalAvtRef = useRef<{ openModal: () => void }>(null);
+  const modalRegRef = useRef<{ openModal: () => void; closeModal: () => void }>(null);
+  const modalAvtRef = useRef<{ openModal: () => void; closeModal: () => void }>(null);
 
   const [activeHash, setActiveHash] = React.useState("");
 
@@ -52,13 +52,6 @@ export default function NavMenu() {
         const id = item.path.replace("/#", "");
         const el = document.getElementById(id);
         if (el) observer.observe(el);
-        if (currentPath === "/enter" && modalAvtRef.current) {
-          router.push("/");
-          modalAvtRef.current.openModal();
-        } else if (currentPath === "/registry" && modalRegRef.current) {
-          router.push("/");
-          modalRegRef.current.openModal();
-      }
     }
     });
 
@@ -111,6 +104,20 @@ export default function NavMenu() {
       // и Link штатно переходит на /#id
     }
   };
+
+  const openLoginAndCloseReg = () => {
+    modalRegRef.current?.closeModal?.(); // Закриваємо реєстрацію
+  setTimeout(() => {
+    modalAvtRef.current?.openModal(); // Відкриваємо вхід
+  }, 100); // Невелика затримка для плавності анімації
+};
+
+const openRegAndCloseLogin = () => {
+    modalAvtRef.current?.closeModal?.(); // Закриваємо вхід
+  setTimeout(() => {
+    modalRegRef.current?.openModal(); // Відкриваємо реєстрацію
+  }, 100);
+};
 
   const handleLogoClick = () => {
     router.push("/");
@@ -174,8 +181,8 @@ export default function NavMenu() {
         </div>
       </nav>
 
-      <ModalRegistration ref={modalRegRef} />
-      <ModalAvtorization ref={modalAvtRef} />
+      <ModalRegistration onSwitchToLogin={openLoginAndCloseReg} ref={modalRegRef} />
+      <ModalAvtorization onSwitchToLogin={openRegAndCloseLogin} ref={modalAvtRef} />
     </Fragment>
   );
 }

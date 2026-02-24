@@ -80,20 +80,16 @@ export async function handleImageUpload(item_gallery: File[]) {
 }
 
 export async function saveUserToDatabase(formData: FormData) {
+    const id = formData.get("id") as string; // ID від Clerk
     const login = formData.get("login") as string;
     const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const passwordRepeat = formData.get("passwordRepeat") as string;
 
-   /*  if (password !== passwordRepeat) {
-        return { success: false, error: "Пароли не совпадают" };
-    } else {
         try {
             const newUser = await prisma.user.create({
                 data: {
+                    id, // Сохраняем ID от Clerk
                     login,
                     email,
-                    password, // В реальной жизни нужно хешировать пароль!
                 }
             });
             return { success: true, user: newUser };
@@ -101,5 +97,4 @@ export async function saveUserToDatabase(formData: FormData) {
             console.error("Ошибка БД:", dbError);
             return { success: false, error: "Ошибка при записи в базу" };
         }
-    }*/
     }

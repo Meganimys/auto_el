@@ -4,12 +4,16 @@ import React, {
   useRef,
   forwardRef,
   Fragment,
+  useEffect,
 } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { saveUserToDatabase } from "../server/lib/prismaManager";
 import Link from "next/link";
+import { checkAvailability } from "../server/lib/checkUser";
+import { useSignUp } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const RegistarionSchema = z.object({
   login: z
@@ -37,8 +41,10 @@ type RegistrationFormData = z.infer<typeof RegistarionSchema>;
 
 const ModalRegistration = forwardRef(({onSwitchToLogin}: {onSwitchToLogin?: () => void}, ref) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const { isLoaded, signUp, setActive } = useSignUp(); // Ініціалізація Clerk
+  const router = useRouter();
 
-  const { register, handleSubmit, formState: { errors } } = useForm<RegistrationFormData>({
+  const { register, handleSubmit, watch, setError, clearErrors, formState: { errors } } = useForm<RegistrationFormData>({
     resolver: zodResolver(RegistarionSchema),
     defaultValues: {
       login: "",
@@ -48,14 +54,70 @@ const ModalRegistration = forwardRef(({onSwitchToLogin}: {onSwitchToLogin?: () =
     },
   });
 
+  const watchLogin = watch("login");
+  const watchEmail = watch("email");
+
+  useEffect(() => {
+  const delayDebounceFn = setTimeout(async () => {
+    if (watchLogin.length >= 3) {
+      const isTaken = await checkAvailability('login', watchLogin);
+      if (isTaken) {
+        setError("login", { type: "manual", message: "Цей логін вже зайнятий" });
+      } else {
+        clearErrors("login");
+      }
+    }
+  }, 500); // Перевірка через 0.5 сек після зупинки вводу
+
+  return () => clearTimeout(delayDebounceFn);
+}, [watchLogin]);
+
+useEffect(() => {
+  const delayDebounceFn = setTimeout(async () => {
+    if (watchEmail.length > 0) {
+      const isTaken = await checkAvailability('email', watchEmail);
+      if (isTaken) {
+        setError("email", { type: "manual", message: "Ця електронна пошта вже зайнята" });
+      } else {
+        clearErrors("email");
+      }
+    }
+  }, 500); // Перевірка через 0.5 сек після зупинки вводу
+
+  return () => clearTimeout(delayDebounceFn);
+}, [watchEmail]);
+
   const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
-    const formData = new FormData();
-    formData.append("login", data.login);
-    formData.append("email", data.email);
-    formData.append("password", data.password);
-    formData.append("passwordRepeat", data.passwordRepeat);
-    await saveUserToDatabase(formData);
-    console.log("Форма отправлена с данными:", data);
+    if (!isLoaded) return; // Чекаємо, поки Clerk завантажиться
+
+    try {
+      const result = await signUp.create({
+        emailAddress: data.email,
+        password: data.password,
+        username: data.login,
+      });
+
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        const formData = new FormData();
+        formData.append("id", result.createdUserId as string); // Передаємо ID від Clerk
+        formData.append("login", data.login);
+        formData.append("email", data.email);
+        const saveResult = await saveUserToDatabase(formData);
+        if (!saveResult.success) {
+          alert("Помилка збереження користувача в базі даних");
+        } else {
+        dialogRef.current?.close();
+        router.push("/");
+        }
+      } else {
+        console.error("Помилка реєстрації:", result);
+        alert("Помилка реєстрації. Спробуйте ще раз.");
+      }
+    } catch (error) {
+      console.error("Помилка реєстрації:", error);
+      alert("Помилка реєстрації. Спробуйте ще раз.");
+    }
   }
 
   useImperativeHandle(ref, () => ({

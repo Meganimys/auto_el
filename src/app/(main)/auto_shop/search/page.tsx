@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import SearchForm from "@/components/client/SearchForm";
 import SearchResultComponent from "@/components/server/SearchResultComponent";
+export const dynamic = 'force-dynamic';
 
 // В Next.js 15 searchParams — это Promise
 export default async function SearchPage({

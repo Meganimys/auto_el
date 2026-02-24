@@ -134,7 +134,6 @@ const openRegAndCloseLogin = () => {
 
   const handleAvatarClick = () => setUserModalVisible(!isUserModalVisible);
   const handleMouseAvatarOver = () => setUserModalVisible(true);
-  const handleMouseAvatarOut = () => setUserModalVisible(false);
 
   return (
     <Fragment>
@@ -209,7 +208,7 @@ const openRegAndCloseLogin = () => {
 
           <SignedIn>
           {/* Права картинка */}
-          <div className="flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500" onClick={handleAvatarClick} onMouseOver={handleMouseAvatarOver} onMouseOut={handleMouseAvatarOut}>
+          <div className="flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500" onClick={handleAvatarClick} onMouseOver={handleMouseAvatarOver}>
             <img
               src="/empty-avatar.png"
               alt="right icon"

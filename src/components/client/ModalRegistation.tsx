@@ -5,9 +5,58 @@ import React, {
   forwardRef,
   Fragment,
 } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { saveUserToDatabase } from "../server/lib/prismaManager";
+import { Link } from "lucide-react";
+
+const RegistarionSchema = z.object({
+  login: z
+    .string()
+    .min(3, "Логін мінімум 3 символа")
+    .max(20, "Логін максимум 20 символов")
+    .regex(/^[a-zA-Z0-9_-]+$/, "Только буквы, цифры, дефис и подчеркивание"),
+  email: z
+    .email("Неверный формат электронной почты")
+    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Неверный формат электронной почты"),
+  password: z
+    .string()
+    .min(6, "Пароль минимум 6 символов")
+    .max(25, "Пароль максимум 25 символов")
+    .regex(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+]).+$/, "Пароль должен содержать хотя бы одну заглавную букву, одну цифру и один специальный символ"),
+  passwordRepeat: z
+    .string()
+    .min(6, "Пароль минимум 6 символов")
+    .max(25, "Пароль максимум 25 символов")
+    .regex(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+]).+$/, "Пароль должен содержать хотя бы одну заглавную букву, одну цифру и один специальный символ"),
+}).refine((data) => data.password === data.passwordRepeat, {
+  message: "Пароли не совпадают"});
+
+type RegistrationFormData = z.infer<typeof RegistarionSchema>;
 
 const ModalRegistration = forwardRef((props, ref) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const { register, handleSubmit, formState: { errors } } = useForm<RegistrationFormData>({
+    resolver: zodResolver(RegistarionSchema),
+    defaultValues: {
+      login: "",
+      email: "",
+      password: "",
+      passwordRepeat: "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
+    const formData = new FormData();
+    formData.append("login", data.login);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("passwordRepeat", data.passwordRepeat);
+    await saveUserToDatabase(formData);
+    console.log("Форма отправлена с данными:", data);
+  }
 
   useImperativeHandle(ref, () => ({
     openModal: () => {
@@ -41,7 +90,7 @@ const ModalRegistration = forwardRef((props, ref) => {
         onClick={handleBackdropClick}
       >
         <div className={divStyle} onClick={(e) => e.stopPropagation()}>
-          <form action="" className={formStyle}>
+          <form onSubmit={handleSubmit(onSubmit)} className={formStyle}>
             <label htmlFor="login-input" className="">
               Введіть логін:
             </label>
@@ -55,7 +104,11 @@ const ModalRegistration = forwardRef((props, ref) => {
               placeholder="Enter your login"
               title="Логін не може бути коротшим за 3 літери"
               required
+              {...register("login")}
             />
+              {errors.login && (
+                <p className="text-red-500">{errors.login.message}</p>
+              )}
             <label htmlFor="email-input" className="">
               Введіть свою електронну пошту:
             </label>
@@ -67,7 +120,11 @@ const ModalRegistration = forwardRef((props, ref) => {
               title="Введіть корректну пошту в форматі domain@domain.name"
               required
               placeholder="Enter you email"
+              {...register("email")}
             />
+              {errors.email && (
+                <p className="text-red-500">{errors.email.message}</p>
+              )}
             <label htmlFor="password-input" className="">
               Введіть пароль:
             </label>
@@ -81,7 +138,11 @@ const ModalRegistration = forwardRef((props, ref) => {
               title="Пароль має містити велику літеру, цифру та спецсимвол"
               required
               placeholder="Enter your password"
+              {...register("password")}
             />
+              {errors.password && (
+                <p className="text-red-500">{errors.password.message}</p>
+              )}
             <label htmlFor="password-repeat-input" className="">
               Введіть пароль повторно:
             </label>
@@ -95,10 +156,17 @@ const ModalRegistration = forwardRef((props, ref) => {
               title="Пароль має містити велику літеру, цифру та спецсимвол"
               required
               placeholder="Repeat your password"
+              {...register("passwordRepeat")}
             />
+              {errors.passwordRepeat && (
+                <p className="text-red-500">{errors.passwordRepeat.message}</p>
+              )}
             <button type="submit" className={submitButtonStyle}>
               Зареєструватися
             </button>
+            <Link href="/login" className="text-sm text-gray-400 hover:text-gray-200">
+              Вже є акаунт? Увійти
+            </Link>
             <button
               type="button"
               onClick={() => dialogRef.current?.close()}

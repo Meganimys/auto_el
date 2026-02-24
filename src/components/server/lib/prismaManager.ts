@@ -78,3 +78,28 @@ export async function handleImageUpload(item_gallery: File[]) {
         return { success: false, error: "Не вдалося зберегти зображення" };
     }
 }
+
+export async function saveUserToDatabase(formData: FormData) {
+    const login = formData.get("login") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const passwordRepeat = formData.get("passwordRepeat") as string;
+
+   /*  if (password !== passwordRepeat) {
+        return { success: false, error: "Пароли не совпадают" };
+    } else {
+        try {
+            const newUser = await prisma.user.create({
+                data: {
+                    login,
+                    email,
+                    password, // В реальной жизни нужно хешировать пароль!
+                }
+            });
+            return { success: true, user: newUser };
+        } catch (dbError) {
+            console.error("Ошибка БД:", dbError);
+            return { success: false, error: "Ошибка при записи в базу" };
+        }
+    }*/
+    }

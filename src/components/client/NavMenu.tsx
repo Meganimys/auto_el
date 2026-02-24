@@ -5,8 +5,12 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import ModalRegistration from "./ModalRegistation";
 import ModalAvtorization from "./ModalAvtorization";
+import { useUser, SignedIn, SignedOut } from "@clerk/nextjs";
 
 export default function NavMenu() {
+  const { isSignedIn, user, isLoaded } = useUser();
+
+  if (!isLoaded) return null;
   const currentPath = usePathname();
   const router = useRouter();
 
@@ -20,6 +24,8 @@ export default function NavMenu() {
     { name: "Послуги", path: "/#services" },
     { name: "Авто-товари", path: "/auto_shop" },
     { name: "Залишити заявку", path: "/#applay" },
+  ];
+  const avtorizationItem: navObj[] = [
     { name: "Вхід", path: "/enter" },
     { name: "Реєстрація", path: "/registry" },
   ];
@@ -166,8 +172,35 @@ const openRegAndCloseLogin = () => {
                 </li>
               );
             })}
+            <SignedOut>
+            {avtorizationItem.map((link: navObj) => {
+              // Витягуємо хеш з шляху (наприклад, "#about_us")
+              const linkHash = link.path.split("/")[1];
+
+              const isActive = link.path.startsWith("/#")
+                ? currentPath === "/" && activeHash === linkHash // Активний хеш на головній
+                : currentPath === link.path; // Звичайне посилання
+
+              return (
+                <li key={link.path} className="py-4">
+                  <Link
+                    onClick={(e) => {
+                      handleNavClick(e, link.path);
+                      if (link.path.startsWith("/#"))
+                        setActiveHash(link.path.replace("/", ""));
+                    }}
+                    href={link.path}
+                    className={`${linkStyles} ${isActive ? activeStyle : ""}`}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              );
+            })}
+            </SignedOut>
           </ul>
 
+          <SignedIn>
           {/* Права картинка */}
           <div className="flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500">
             <img
@@ -178,6 +211,7 @@ const openRegAndCloseLogin = () => {
               className="rounded-[50%] min-h-full min-w-full overflow-hidden object-contain hover:opacity-75 active:opacity-90"
             />
           </div>
+          </SignedIn>
         </div>
       </nav>
 

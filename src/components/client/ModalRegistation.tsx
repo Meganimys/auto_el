@@ -164,7 +164,7 @@ const ModalRegistration = forwardRef((props, ref) => {
             <button type="submit" className={submitButtonStyle}>
               Зареєструватися
             </button>
-            <Link href="/login" className="text-sm text-gray-400 hover:text-gray-200">
+            <Link href="/enter" className="text-sm text-gray-400 hover:text-gray-200">
               Вже є акаунт? Увійти
             </Link>
             <button

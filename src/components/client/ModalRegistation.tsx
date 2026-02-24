@@ -198,7 +198,7 @@ const inputTextStyle: string =
 // 4. В formStyle меняем grid на flex для более мягкого распределения высоты.
 // max-w-[90%] даёт отступы по бокам внутри divStyle.
 const formStyle: string =
-  "w-full max-w-[350px] flex flex-col items-stretch text-center gap-3 py-4";
+  "relative w-full max-w-[350px] flex flex-col items-stretch text-center gap-3 py-4";
 
 const submitButtonStyle: string =
   "min-h-12 mt-4 bg-purple-700 rounded-xl text-amber-100 font-bold hover:bg-purple-600 active:bg-purple-500 transition-all";

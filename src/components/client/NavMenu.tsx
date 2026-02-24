@@ -132,6 +132,7 @@ const openRegAndCloseLogin = () => {
 
   const [isUserModalVisible, setUserModalVisible] = useState<boolean>(false);
 
+  const handleMouseOut = () => setUserModalVisible(false);
   const handleAvatarClick = () => setUserModalVisible(!isUserModalVisible);
   const handleMouseAvatarOver = () => setUserModalVisible(true);
 
@@ -217,7 +218,8 @@ const openRegAndCloseLogin = () => {
               className="rounded-[50%] min-h-full min-w-full overflow-hidden object-contain hover:opacity-75 active:opacity-90"
             />
           </div>
-          <ModalUserMenu isVisible={isUserModalVisible}></ModalUserMenu>
+          <div onMouseOut={handleMouseOut}><ModalUserMenu isVisible={isUserModalVisible}></ModalUserMenu></div>
+          
           </SignedIn>
         </div>
       </nav>

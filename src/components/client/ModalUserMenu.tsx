@@ -11,8 +11,6 @@ export default function ModalUserMenu({ isVisible }: ModalUserMenuProps) {
     const router = useRouter();
     const { signOut } = useClerk();
 
-    const handleMenuOver = () => {isVisible = false};
-
     // Визначаємо пункти меню всередині компонента, 
     // щоб вони мали доступ до router та signOut
     const listItems = [
@@ -32,7 +30,7 @@ export default function ModalUserMenu({ isVisible }: ModalUserMenuProps) {
     if (!isVisible) return null;
 
     return (
-        <ul className="absolute top-full right-0 flex flex-col justify-center text-center bg-gray-900 border border-yellow-800 p-2 rounded-lg z-50" onMouseOut={handleMenuOver}>
+        <ul className="absolute top-full right-0 flex flex-col justify-center text-center bg-gray-900 border border-yellow-800 p-2 rounded-lg z-50">
             {listItems.map((item, index) => (
                 <li 
                     className="cursor-pointer hover:text-yellow-500 p-2 border-b border-gray-800 last:border-none" 

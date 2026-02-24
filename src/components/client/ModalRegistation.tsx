@@ -162,9 +162,15 @@ const ModalRegistration = forwardRef(
           console.error("Помилка реєстрації:", result);
           alert("Помилка реєстрації. Спробуйте ще раз.");
         }
-      } catch (error) {
-        console.error("Помилка реєстрації:", error);
-        alert("Помилка реєстрації. Спробуйте ще раз.");
+      } catch (err: any) {
+        if (err.errors) {
+    const messages = err.errors.map((e: any) => e.longMessage).join("\n");
+    console.error("Деталі помилки Clerk:", err.errors);
+    alert(`Помилка Clerk: ${messages}`);
+  } else {
+    console.error("Невідома помилка:", err);
+    alert("Сталася невідома помилка");
+  }
       }
     };
 

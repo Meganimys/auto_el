@@ -164,12 +164,7 @@ useEffect(() => {
               type="text"
               id="login-input"
               className={inputTextStyle}
-              minLength={3}
-              maxLength={20}
-              pattern="[a-zA-Z0-9_-]+"
               placeholder="Enter your login"
-              title="Логін не може бути коротшим за 3 літери"
-              required
               {...register("login")}
             />
               {errors.login && (
@@ -182,9 +177,6 @@ useEffect(() => {
               type="email"
               id="email-input"
               className={inputTextStyle}
-              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-              title="Введіть корректну пошту в форматі domain@domain.name"
-              required
               placeholder="Enter you email"
               {...register("email")}
             />
@@ -198,11 +190,6 @@ useEffect(() => {
               type="password"
               id="password-input"
               className={inputTextStyle}
-              minLength={6}
-              maxLength={25}
-              pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+]).+$"
-              title="Пароль має містити велику літеру, цифру та спецсимвол"
-              required
               placeholder="Enter your password"
               {...register("password")}
             />
@@ -216,11 +203,6 @@ useEffect(() => {
               type="password"
               id="password-repeat-input"
               className={inputTextStyle}
-              minLength={6}
-              maxLength={25}
-              pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+]).+$"
-              title="Пароль має містити велику літеру, цифру та спецсимвол"
-              required
               placeholder="Repeat your password"
               {...register("passwordRepeat")}
             />

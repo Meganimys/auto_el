@@ -48,6 +48,7 @@ const RegistarionSchema = z
   })
   .refine((data) => data.password === data.passwordRepeat, {
     message: "Пароли не совпадают",
+    path: ["passwordRepeat"], // ТЕПЕР ПОМИЛКА БУДЕ ТУТ
   });
 
 type RegistrationFormData = z.infer<typeof RegistarionSchema>;

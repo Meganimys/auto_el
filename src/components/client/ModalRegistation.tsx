@@ -182,13 +182,13 @@ const ModalRegistration = forwardRef(
       }
     };
     const dialogStyle: string =
-      "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0  border-none bg-transparent outline-none z-50 w-[90vw] md:w-[35%] min-h-[50vh] hidden open:grid place-items-center backdrop:bg-black/50";
+      "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0  border-none bg-transparent outline-none z-50 w-[90vw] md:w-[35%] h-auto hidden open:grid place-items-center backdrop:bg-black/50";
     const divStyle: string =
-      "overflow-hidden w-[34vw] min-w-[320px] font-bold p-6 text-amber-100 bg-gray-900 grid place-items-center rounded-[20px] border-2 border-yellow-800";
+      "w-full max-w-[450px] min-w-[320px] font-bold p-6 text-amber-100 bg-gray-900 grid place-items-center rounded-[20px] border-2 border-yellow-800";
     const inputTextStyle: string =
       "min-h-10 pl-2 border-2 border-solid border-gray-800 rounded-xl";
     const formStyle: string =
-      "my-10 max-w-[80%] grid col-auto items-center text-center gap-6.25";
+      "my-10 max-w-[80%] grid col-auto items-center text-center gap-2";
     const submitButtonStyle: string =
       "min-h-10  bg-purple-700 rounded-xl text-amber-100 hover:bg-purple-600 active:bg-purple-500";
     const closeDialogButtonStyle: string =

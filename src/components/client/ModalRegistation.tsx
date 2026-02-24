@@ -46,6 +46,7 @@ const ModalRegistration = forwardRef(({onSwitchToLogin}: {onSwitchToLogin?: () =
 
   const { register, handleSubmit, watch, setError, clearErrors, formState: { errors } } = useForm<RegistrationFormData>({
     resolver: zodResolver(RegistarionSchema),
+    mode: "onChange",
     defaultValues: {
       login: "",
       email: "",
@@ -155,7 +156,7 @@ useEffect(() => {
         onClick={handleBackdropClick}
       >
         <div className={divStyle} onClick={(e) => e.stopPropagation()}>
-          <form onSubmit={handleSubmit(onSubmit)} className={formStyle}>
+          <form onSubmit={handleSubmit(onSubmit)} className={formStyle} noValidate>
             <label htmlFor="login-input" className="">
               Введіть логін:
             </label>

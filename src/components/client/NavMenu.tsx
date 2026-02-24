@@ -132,9 +132,7 @@ const openRegAndCloseLogin = () => {
 
   const [isUserModalVisible, setUserModalVisible] = useState<boolean>(false);
 
-  const handleMouseOut = () => setUserModalVisible(false);
   const handleAvatarClick = () => setUserModalVisible(!isUserModalVisible);
-  const handleMouseAvatarOver = () => setUserModalVisible(true);
 
   return (
     <Fragment>
@@ -209,7 +207,7 @@ const openRegAndCloseLogin = () => {
 
           <SignedIn>
           {/* Права картинка */}
-          <div className="flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500" onClick={handleAvatarClick} onMouseOver={handleMouseAvatarOver}>
+          <div className="flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500" onClick={handleAvatarClick}>
             <img
               src="/empty-avatar.png"
               alt="right icon"
@@ -218,8 +216,7 @@ const openRegAndCloseLogin = () => {
               className="rounded-[50%] min-h-full min-w-full overflow-hidden object-contain hover:opacity-75 active:opacity-90"
             />
           </div>
-          <div onMouseOut={handleMouseOut}><ModalUserMenu isVisible={isUserModalVisible}></ModalUserMenu></div>
-          
+          <ModalUserMenu isVisible={isUserModalVisible}></ModalUserMenu>
           </SignedIn>
         </div>
       </nav>

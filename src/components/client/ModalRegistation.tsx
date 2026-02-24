@@ -181,18 +181,31 @@ const ModalRegistration = forwardRef(
         dialogRef.current?.close();
       }
     };
-    const dialogStyle: string =
-      "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0  border-none bg-transparent outline-none z-50 w-[90vw] md:w-[35%] h-auto hidden open:grid place-items-center backdrop:bg-black/50";
-    const divStyle: string =
-      "w-full max-w-[450px] min-w-[320px] font-bold p-6 text-amber-100 bg-gray-900 grid place-items-center rounded-[20px] border-2 border-yellow-800";
-    const inputTextStyle: string =
-      "min-h-10 pl-2 border-2 border-solid border-gray-800 rounded-xl";
-    const formStyle: string =
-      "my-10 max-w-[80%] grid col-auto items-center text-center gap-2";
-    const submitButtonStyle: string =
-      "min-h-10  bg-purple-700 rounded-xl text-amber-100 hover:bg-purple-600 active:bg-purple-500";
-    const closeDialogButtonStyle: string =
-      "absolute top-5 right-5 min-h-10 min-w-10 border-2 border-yellow-800 rounded-xl text-3xl hover:bg-amber-300 hover:text-red-500 active:bg-amber-200";
+    // 1. Убираем фиксированную высоту. Добавляем h-auto. 
+// overflow-visible гарантирует, что тени и текст не вызовут полос.
+const dialogStyle: string =
+  "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0 border-none bg-transparent outline-none z-50 w-full max-w-fit h-auto hidden open:grid place-items-center backdrop:bg-black/50 overflow-visible";
+
+// 2. В divStyle убираем w-[34vw]. max-h-[90vh] на случай очень маленьких экранов (телефонов), 
+// чтобы модалка не ушла за границы экрана.
+const divStyle: string =
+  "w-[95vw] max-w-[450px] font-bold p-6 md:p-8 text-amber-100 bg-gray-900 flex flex-col items-center rounded-[20px] border-2 border-yellow-800 shadow-2xl overflow-y-auto max-h-[95vh]";
+
+// 3. Инпуты должны занимать всю ширину контейнера формы.
+const inputTextStyle: string =
+  "w-full min-h-10 px-4 border-2 border-solid border-gray-800 rounded-xl bg-gray-800 text-white focus:border-purple-500 outline-none transition-colors";
+
+// 4. В formStyle меняем grid на flex для более мягкого распределения высоты.
+// max-w-[90%] даёт отступы по бокам внутри divStyle.
+const formStyle: string =
+  "w-full max-w-[350px] flex flex-col items-stretch text-center gap-3 py-4";
+
+const submitButtonStyle: string =
+  "min-h-12 mt-4 bg-purple-700 rounded-xl text-amber-100 font-bold hover:bg-purple-600 active:bg-purple-500 transition-all";
+
+const closeDialogButtonStyle: string =
+  "absolute top-4 right-4 h-10 w-10 flex items-center justify-center border-2 border-yellow-800 rounded-xl text-2xl hover:bg-amber-300 hover:text-red-500 transition-colors";
+
 
     return (
       <Fragment>

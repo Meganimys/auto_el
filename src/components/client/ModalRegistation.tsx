@@ -9,7 +9,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { saveUserToDatabase } from "../server/lib/prismaManager";
-import { Link } from "lucide-react";
+import Link from "next/link";
 
 const RegistarionSchema = z.object({
   login: z

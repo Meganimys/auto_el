@@ -107,7 +107,7 @@ const ModalRegistration = forwardRef(
       }, 500); // Перевірка через 0.5 сек після зупинки вводу
 
       return () => clearTimeout(delayDebounceFn);
-    }, [watchLogin, errors.login, setError, clearErrors]);
+    }, [watchLogin, errors.login]);
 
     useEffect(() => {
       setIsEmailAvailable(null);
@@ -128,7 +128,7 @@ const ModalRegistration = forwardRef(
       }, 500); // Перевірка через 0.5 сек після зупинки вводу
 
       return () => clearTimeout(delayDebounceFn);
-    }, [watchEmail, errors.email, setError, clearErrors]);
+    }, [watchEmail, errors.email]);
 
     const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
       if (!isLoaded) return; // Чекаємо, поки Clerk завантажиться

@@ -53,8 +53,10 @@ export default function NavMenu() {
         const el = document.getElementById(id);
         if (el) observer.observe(el);
         if (currentPath === "/enter" && modalAvtRef.current) {
+          router.push("/");
           modalAvtRef.current.openModal();
         } else if (currentPath === "/registry" && modalRegRef.current) {
+          router.push("/");
           modalRegRef.current.openModal();
       }
     }

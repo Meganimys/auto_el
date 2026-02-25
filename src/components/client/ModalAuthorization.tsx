@@ -4,6 +4,7 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
+  useEffect,
   forwardRef,
   Fragment,
 } from "react";
@@ -24,11 +25,15 @@ const ModalAuthorization = forwardRef(
   ({ onSwitchToLogin }: { onSwitchToLogin?: () => void }, ref) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
 
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
     const { signIn, isLoaded, setActive } = useSignIn();
 
     const router = useRouter();
 
     const [authError, setAuthError] = useState<string | null>(null);
+
+    const [isAuthorization, setAuthStatus] = useState<boolean>(false);
 
     const { register, handleSubmit, formState: { errors } } = useForm<AuthorizationFormData>({
     // 4. Сюди передаємо СХЕМУ (formSchema), а не тип
@@ -39,6 +44,14 @@ const ModalAuthorization = forwardRef(
       password: "",
     },
   });
+
+  useEffect(() => {
+  if (buttonRef.current) {
+    // Если авторизован — кнопка активна (disabled = false)
+    // Если не авторизован — кнопка заблокирована (disabled = true)
+    buttonRef.current.disabled = !isAuthorization;
+  }
+}, [isAuthorization]);
 
     useImperativeHandle(ref, () => ({
       openModal: () => {
@@ -58,6 +71,7 @@ const ModalAuthorization = forwardRef(
     const onSubmit: SubmitHandler<AuthorizationFormData> = async (data) => {
       if(!isLoaded) return;
       try{
+        setAuthStatus(true)
         const result = await signIn.create({
           identifier: data.email,
           password: data.password
@@ -71,6 +85,7 @@ const ModalAuthorization = forwardRef(
         } else {
       console.log("Додаткові кроки валідації:", result.status);
     } 
+    setAuthStatus(false);
       } catch (err: any) {
         const msg = err.errors?.[0]?.longMessage || "Невірний логін або пароль";
         setAuthError(msg);
@@ -136,8 +151,8 @@ const closeDialogButtonStyle: string =
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>
               )}
-              <button type="submit" className={submitButtonStyle}>
-                Увійти
+              <button type="submit" className={submitButtonStyle} ref={buttonRef}>
+                {isAuthorization ? "Увійти" : "Виконується вхід..."}
               </button>
               {authError && <p className="text-red-500">{authError}</p>}
               <Link

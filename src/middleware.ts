@@ -1,10 +1,18 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from 'next/server';
 
 // Визначаємо приватні роути
 const isProtectedRoute = createRouteMatcher(['/profile(.*)', '/control/(.*)']);
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) await auth.protect();
+  const { userId } = await auth();
+
+  // Якщо користувач не залогінений і намагається зайти на захищену сторінку
+  if (!userId && isProtectedRoute(req)) {
+    // Отримуємо URL головної сторінки
+    const homeUrl = new URL('/', req.url);
+    return NextResponse.redirect(homeUrl);
+  }
 });
 
 export const config = {

@@ -55,7 +55,6 @@ type RegistrationFormData = z.infer<typeof RegistarionSchema>;
 
 const ModalRegistration = forwardRef(
   ({ onSwitchToLogin }: { onSwitchToLogin?: () => void }, ref) => {
-
     const dialogRef = useRef<HTMLDialogElement>(null);
 
     const { isLoaded, signUp, setActive } = useSignUp(); // Ініціалізація Clerk
@@ -147,10 +146,9 @@ const ModalRegistration = forwardRef(
     const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
       if (!isLoaded) return; // Чекаємо, поки Clerk завантажиться
 
-      setRegistrationStatus(true)
+      setRegistrationStatus(true);
 
       try {
-        
         const result = await signUp.create({
           emailAddress: data.email,
           password: data.password,
@@ -176,13 +174,13 @@ const ModalRegistration = forwardRef(
         }
       } catch (err: any) {
         if (err.errors) {
-    const messages = err.errors.map((e: any) => e.longMessage).join("\n");
-    console.error("Деталі помилки Clerk:", err.errors);
-    alert(`Помилка Clerk: ${messages}`);
-  } else {
-    console.error("Невідома помилка:", err);
-    alert("Сталася невідома помилка");
-  }
+          const messages = err.errors.map((e: any) => e.longMessage).join("\n");
+          console.error("Деталі помилки Clerk:", err.errors);
+          alert(`Помилка Clerk: ${messages}`);
+        } else {
+          console.error("Невідома помилка:", err);
+          alert("Сталася невідома помилка");
+        }
       }
       setRegistrationStatus(false);
     };
@@ -201,31 +199,30 @@ const ModalRegistration = forwardRef(
         dialogRef.current?.close();
       }
     };
-    // 1. Убираем фиксированную высоту. Добавляем h-auto. 
-// overflow-visible гарантирует, что тени и текст не вызовут полос.
-const dialogStyle: string =
-  "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0 border-none bg-transparent outline-none z-50 w-full max-w-fit h-auto hidden open:grid place-items-center backdrop:bg-black/50 overflow-visible";
+    // 1. Убираем фиксированную высоту. Добавляем h-auto.
+    // overflow-visible гарантирует, что тени и текст не вызовут полос.
+    const dialogStyle: string =
+      "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0 border-none bg-transparent outline-none z-50 w-full max-w-fit h-auto hidden open:grid place-items-center backdrop:bg-black/50 overflow-visible";
 
-// 2. В divStyle убираем w-[34vw]. max-h-[90vh] на случай очень маленьких экранов (телефонов), 
-// чтобы модалка не ушла за границы экрана.
-const divStyle: string =
-  "relative w-[95vw] max-w-[450px] font-bold p-6 md:p-8 text-amber-100 bg-gray-900 flex flex-col items-center rounded-[20px] border-2 border-yellow-800 shadow-2xl overflow-y-auto max-h-[95vh]";
+    // 2. В divStyle убираем w-[34vw]. max-h-[90vh] на случай очень маленьких экранов (телефонов),
+    // чтобы модалка не ушла за границы экрана.
+    const divStyle: string =
+      "relative w-[95vw] max-w-[450px] font-bold p-6 md:p-8 text-amber-100 bg-gray-900 flex flex-col items-center rounded-[20px] border-2 border-yellow-800 shadow-2xl overflow-y-auto max-h-[95vh]";
 
-// 3. Инпуты должны занимать всю ширину контейнера формы.
-const inputTextStyle: string =
-  "w-full min-h-10 px-4 border-2 border-solid border-gray-800 rounded-xl bg-gray-800 text-white focus:border-purple-500 outline-none transition-colors";
+    // 3. Инпуты должны занимать всю ширину контейнера формы.
+    const inputTextStyle: string =
+      "w-full min-h-10 px-4 border-2 border-solid border-gray-800 rounded-xl bg-gray-800 text-white focus:border-purple-500 outline-none transition-colors";
 
-// 4. В formStyle меняем grid на flex для более мягкого распределения высоты.
-// max-w-[90%] даёт отступы по бокам внутри divStyle.
-const formStyle: string =
-  "w-full max-w-[350px] flex flex-col items-stretch text-center gap-3 py-4";
+    // 4. В formStyle меняем grid на flex для более мягкого распределения высоты.
+    // max-w-[90%] даёт отступы по бокам внутри divStyle.
+    const formStyle: string =
+      "w-full max-w-[350px] flex flex-col items-stretch text-center gap-3 py-4";
 
-const submitButtonStyle: string =
-  "min-h-12 mt-4 bg-purple-700 rounded-xl text-amber-100 font-bold hover:bg-purple-600 active:bg-purple-500 transition-all";
+    const submitButtonStyle: string =
+      "min-h-12 mt-4 bg-purple-700 rounded-xl text-amber-100 font-bold hover:bg-purple-600 active:bg-purple-500 transition-all";
 
-const closeDialogButtonStyle: string =
-  "absolute top-4 right-4 h-10 w-10 flex items-center justify-center border-2 border-yellow-800 rounded-xl text-2xl hover:bg-amber-300 hover:text-red-500 transition-colors";
-
+    const closeDialogButtonStyle: string =
+      "absolute top-4 right-4 h-10 w-10 flex items-center justify-center border-2 border-yellow-800 rounded-xl text-2xl hover:bg-amber-300 hover:text-red-500 transition-colors";
 
     return (
       <Fragment>
@@ -297,7 +294,7 @@ const closeDialogButtonStyle: string =
               {/* Приоритет 3: Логин свободен (только если нет ошибок и проверка завершена) */}
               {!errors.login && isEmailAvailable && !isEmailChecking && (
                 <p className="text-green-500 text-sm mt-1">
-                  ✨  Ця пошта вільна!
+                  ✨ Ця пошта вільна!
                 </p>
               )}
               <label htmlFor="password-input" className="">
@@ -326,20 +323,20 @@ const closeDialogButtonStyle: string =
               {errors.passwordRepeat && (
                 <p className="text-red-500">{errors.passwordRepeat.message}</p>
               )}
-              <button 
-  type="submit" 
-  className={`${submitButtonStyle} flex items-center justify-center gap-2`} 
-  disabled={isRegistration}
->
-  {isRegistration ? (
-    <>
-      <div className="w-5 h-5 border-2 border-amber-100/30 border-t-amber-100 rounded-full animate-spin-slow"></div>
-      <span>Реєстрація...</span>
-    </>
-  ) : (
-    "Зареєструватися"
-  )}
-</button>
+              <button
+                type="submit"
+                className={`${submitButtonStyle} flex items-center justify-center gap-2`}
+                disabled={isRegistration}
+              >
+                {isRegistration ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-amber-100/30 border-t-amber-100 rounded-full animate-spin-slow"></div>
+                    <span>Реєстрація...</span>
+                  </>
+                ) : (
+                  "Зареєструватися"
+                )}
+              </button>
               <Link
                 href="#"
                 onClick={() => {
@@ -351,12 +348,12 @@ const closeDialogButtonStyle: string =
               </Link>
             </form>
             <button
-                type="button"
-                onClick={() => dialogRef.current?.close()}
-                className={closeDialogButtonStyle}
-              >
-                x
-              </button>
+              type="button"
+              onClick={() => dialogRef.current?.close()}
+              className={closeDialogButtonStyle}
+            >
+              x
+            </button>
           </div>
         </dialog>
       </Fragment>

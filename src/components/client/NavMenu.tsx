@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import ModalRegistration from "./ModalRegistation";
-import ModalAvtorization from "./ModalAvtorization";
+import ModalAuthorization from "./ModalAuthorization";
 import ModalUserMenu from "./ModalUserMenu";
 import { useUser, SignedIn, SignedOut } from "@clerk/nextjs";
 
@@ -225,7 +225,7 @@ const openRegAndCloseLogin = () => {
       </nav>
 
       <ModalRegistration onSwitchToLogin={openLoginAndCloseReg} ref={modalRegRef} />
-      <ModalAvtorization onSwitchToLogin={openRegAndCloseLogin} ref={modalAvtRef} />
+      <ModalAuthorization onSwitchToLogin={openRegAndCloseLogin} ref={modalAvtRef} />
     </Fragment>
   );
 }

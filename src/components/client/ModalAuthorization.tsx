@@ -7,7 +7,7 @@ import React, {
   Fragment,
 } from "react";
 
-const ModalAvtorization = forwardRef(({ onSwitchToLogin } : { onSwitchToLogin?: () => void }, ref) => {
+const ModalAuthorization = forwardRef(({ onSwitchToLogin } : { onSwitchToLogin?: () => void }, ref) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useImperativeHandle(ref, () => ({
@@ -48,10 +48,10 @@ const ModalAvtorization = forwardRef(({ onSwitchToLogin } : { onSwitchToLogin?: 
         <div className={divStyle} onClick={(e) => e.stopPropagation()}>
           <form action="" className={formStyle}>
             <label htmlFor="" className="">
-              Введіть логін:
+              Введіть свою електронну пошту:
             </label>
             <input
-              type="text"
+              type="email"
               className={inputTextStyle}
               minLength={3}
               maxLength={20}
@@ -95,5 +95,5 @@ const ModalAvtorization = forwardRef(({ onSwitchToLogin } : { onSwitchToLogin?: 
   );
 });
 
-ModalAvtorization.displayName = "ModalAvtorization";
-export default ModalAvtorization;
+ModalAuthorization.displayName = "ModalAvtorization";
+export default ModalAuthorization;

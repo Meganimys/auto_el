@@ -74,17 +74,7 @@ const ModalRegistration = forwardRef(
 
     const [isEmailChecking, setIsEmailChecking] = useState(false);
 
-    const buttonRef = useRef<HTMLButtonElement>(null);
-
     const [isRegistration, setRegistrationStatus] = useState<boolean>(false);
-
-    useEffect(() => {
-      if (buttonRef.current) {
-        // Если авторизован — кнопка активна (disabled = false)
-        // Если не авторизован — кнопка заблокирована (disabled = true)
-        buttonRef.current.disabled = !isRegistration;
-      }
-    }, [isRegistration]);
 
     const {
       register,
@@ -336,7 +326,7 @@ const closeDialogButtonStyle: string =
               {errors.passwordRepeat && (
                 <p className="text-red-500">{errors.passwordRepeat.message}</p>
               )}
-              <button type="submit" className={submitButtonStyle} ref={buttonRef}>
+              <button type="submit" className={submitButtonStyle} disabled={isRegistration}>
                 {isRegistration ? "Виконується реєстрація..." : "Зареєструватися"}
               </button>
               <Link

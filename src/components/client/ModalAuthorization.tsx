@@ -25,8 +25,6 @@ const ModalAuthorization = forwardRef(
   ({ onSwitchToLogin }: { onSwitchToLogin?: () => void }, ref) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
 
-    const buttonRef = useRef<HTMLButtonElement>(null);
-
     const { signIn, isLoaded, setActive } = useSignIn();
 
     const router = useRouter();
@@ -44,14 +42,6 @@ const ModalAuthorization = forwardRef(
       password: "",
     },
   });
-
-  useEffect(() => {
-  if (buttonRef.current) {
-    // Если авторизован — кнопка активна (disabled = false)
-    // Если не авторизован — кнопка заблокирована (disabled = true)
-    buttonRef.current.disabled = !isAuthorization;
-  }
-}, [isAuthorization]);
 
     useImperativeHandle(ref, () => ({
       openModal: () => {
@@ -154,7 +144,7 @@ const closeDialogButtonStyle: string =
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>
               )}
-              <button type="submit" className={submitButtonStyle} ref={buttonRef}>
+              <button type="submit" className={submitButtonStyle} disabled={isAuthorization}>
                 {isAuthorization ? "Виконується вхід..." : "Увійти"}
               </button>
               {authError && <p className="text-red-500">{authError}</p>}

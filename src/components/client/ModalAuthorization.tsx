@@ -70,8 +70,10 @@ const ModalAuthorization = forwardRef(
 
     const onSubmit: SubmitHandler<AuthorizationFormData> = async (data) => {
       if(!isLoaded) return;
+
+      setAuthStatus(true)
+
       try{
-        setAuthStatus(true)
         const result = await signIn.create({
           identifier: data.email,
           password: data.password
@@ -85,12 +87,13 @@ const ModalAuthorization = forwardRef(
         } else {
       console.log("Додаткові кроки валідації:", result.status);
     } 
-    setAuthStatus(false);
+    
       } catch (err: any) {
         const msg = err.errors?.[0]?.longMessage || "Невірний логін або пароль";
         setAuthError(msg);
     console.error("Помилка логіну:", err.errors);
   }
+  setAuthStatus(false);
     };
 
      // 1. Убираем фиксированную высоту. Добавляем h-auto. 
@@ -152,7 +155,7 @@ const closeDialogButtonStyle: string =
                 <p className="text-red-500">{errors.password.message}</p>
               )}
               <button type="submit" className={submitButtonStyle} ref={buttonRef}>
-                {isAuthorization ? "Увійти" : "Виконується вхід..."}
+                {isAuthorization ? "Виконується вхід..." : "Увійти"}
               </button>
               {authError && <p className="text-red-500">{authError}</p>}
               <Link

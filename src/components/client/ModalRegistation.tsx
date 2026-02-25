@@ -55,17 +55,36 @@ type RegistrationFormData = z.infer<typeof RegistarionSchema>;
 
 const ModalRegistration = forwardRef(
   ({ onSwitchToLogin }: { onSwitchToLogin?: () => void }, ref) => {
+
     const dialogRef = useRef<HTMLDialogElement>(null);
+
     const { isLoaded, signUp, setActive } = useSignUp(); // Ініціалізація Clerk
+
     const router = useRouter();
+
     const [isLoginAvailable, setIsLoginAvailable] = useState<boolean | null>(
       null,
     );
+
     const [isLoginChecking, setIsLoginChecking] = useState(false);
+
     const [isEmailAvailable, setIsEmailAvailable] = useState<boolean | null>(
       null,
     );
+
     const [isEmailChecking, setIsEmailChecking] = useState(false);
+
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    const [isRegistration, setRegistrationStatus] = useState<boolean>(false);
+
+    useEffect(() => {
+      if (buttonRef.current) {
+        // Если авторизован — кнопка активна (disabled = false)
+        // Если не авторизован — кнопка заблокирована (disabled = true)
+        buttonRef.current.disabled = !isRegistration;
+      }
+    }, [isRegistration]);
 
     const {
       register,
@@ -138,7 +157,10 @@ const ModalRegistration = forwardRef(
     const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
       if (!isLoaded) return; // Чекаємо, поки Clerk завантажиться
 
+      setRegistrationStatus(true)
+
       try {
+        
         const result = await signUp.create({
           emailAddress: data.email,
           password: data.password,
@@ -172,6 +194,7 @@ const ModalRegistration = forwardRef(
     alert("Сталася невідома помилка");
   }
       }
+      setRegistrationStatus(false);
     };
 
     useImperativeHandle(ref, () => ({
@@ -313,8 +336,8 @@ const closeDialogButtonStyle: string =
               {errors.passwordRepeat && (
                 <p className="text-red-500">{errors.passwordRepeat.message}</p>
               )}
-              <button type="submit" className={submitButtonStyle}>
-                Зареєструватися
+              <button type="submit" className={submitButtonStyle} ref={buttonRef}>
+                {isRegistration ? "Виконується реєстрація..." : "Зареєструватися"}
               </button>
               <Link
                 href="#"

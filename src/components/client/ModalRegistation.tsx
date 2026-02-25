@@ -326,9 +326,20 @@ const closeDialogButtonStyle: string =
               {errors.passwordRepeat && (
                 <p className="text-red-500">{errors.passwordRepeat.message}</p>
               )}
-              <button type="submit" className={submitButtonStyle} disabled={isRegistration}>
-                {isRegistration ? "Виконується реєстрація..." : "Зареєструватися"}
-              </button>
+              <button 
+  type="submit" 
+  className={`${submitButtonStyle} flex items-center justify-center gap-2`} 
+  disabled={isRegistration}
+>
+  {isRegistration ? (
+    <>
+      <div className="w-5 h-5 border-2 border-amber-100/30 border-t-amber-100 rounded-full animate-spin-slow"></div>
+      <span>Реєстрація...</span>
+    </>
+  ) : (
+    "Зареєструватися"
+  )}
+</button>
               <Link
                 href="#"
                 onClick={() => {

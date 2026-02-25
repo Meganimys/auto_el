@@ -38,3 +38,10 @@ option {
   color: #0a0a0a;
   background-color: #ffffff;
 }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin 1s linear infinite;
+}

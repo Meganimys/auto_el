@@ -216,7 +216,10 @@ const openRegAndCloseLogin = () => {
               className="rounded-[50%] min-h-full min-w-full overflow-hidden object-contain hover:opacity-75 active:opacity-90"
             />
           </div>
+          <div className="">
           <ModalUserMenu isVisible={isUserModalVisible}></ModalUserMenu>
+          {isUserModalVisible && <div className="absolute top-2 right-2 w-5 h-5 z-10 flex justify-center items-center align-middle">X</div>}
+          </div>
           </SignedIn>
         </div>
       </nav>

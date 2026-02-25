@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 // Визначаємо приватні роути
-const isProtectedRoute = createRouteMatcher(['/dashboard(.*)', '/profile(.*)', '/control/(.*)']);
+const isProtectedRoute = createRouteMatcher(['/profile(.*)', '/control/(.*)']);
 
 export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) await auth.protect();

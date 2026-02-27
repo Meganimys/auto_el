@@ -7,11 +7,24 @@ import ModalRegistration from "./ModalRegistation";
 import ModalAuthorization from "./ModalAuthorization";
 import ModalUserMenu from "./ModalUserMenu";
 import { useUser, SignedIn, SignedOut } from "@clerk/nextjs";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
 export default function NavMenu() {
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { isLoaded } = useUser();
 
-  if (!isLoaded) return null;
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    // Ховаємо тільки якщо проскролили вниз більше 150px
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
+
   const currentPath = usePathname();
   const router = useRouter();
 
@@ -134,9 +147,16 @@ const openRegAndCloseLogin = () => {
 
   const handleAvatarClick = () => setUserModalVisible(!isUserModalVisible);
 
+  if (!isLoaded) return null;
+
   return (
     <Fragment>
-      <nav className="sticky mt-25 h-25 top-0 w-full rounded-xl bg-[#4b0082]/50 border-b border-[#800080] pr-4 z-50">
+      <motion.nav variants={{
+        visible: { y: 0, opacity: 1 },
+        hidden: { y: -100, opacity: 0 } // Плавне зникнення вгору
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.3, ease: "easeInOut" }} className="sticky h-25 top-0 w-full rounded-xl bg-[#4b0082]/50 border-b border-[#800080] backdrop-blur-md pr-4 z-50">
         {/* Контейнер, який ділить простір на 3 частини */}
         <div className="flex items-center justify-between w-full mx-auto min-h-full max-h-full">
           {/* Ліва картинка */}
@@ -222,7 +242,7 @@ const openRegAndCloseLogin = () => {
           </div>
           </SignedIn>
         </div>
-      </nav>
+      </motion.nav>
 
       <ModalRegistration onSwitchToLogin={openLoginAndCloseReg} ref={modalRegRef} />
       <ModalAuthorization onSwitchToLogin={openRegAndCloseLogin} ref={modalAvtRef} />

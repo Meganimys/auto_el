@@ -14,7 +14,7 @@ export default function Footer() {
 
   return (
     <Fragment>
-      <footer className="bg-neutral-900 rounded-b-xl mb-25" id="footer">
+      <footer className="bg-neutral-900 rounded-b-xl" id="footer">
         <section
           className="grid grid-cols-2 items-center bg-gray-950"
           id="adress"

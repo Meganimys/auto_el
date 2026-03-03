@@ -5,24 +5,26 @@ import { useRouter } from "next/navigation";
 
 interface ModalUserMenuProps {
     isVisible: boolean;
-}
+    closeMenu: () => void;
+};
 
-export default function ModalUserMenu({ isVisible }: ModalUserMenuProps) {
+export default function ModalUserMenu({ isVisible, closeMenu }: ModalUserMenuProps) {
     const router = useRouter();
     const { signOut } = useClerk();
 
     // Визначаємо пункти меню всередині компонента, 
     // щоб вони мали доступ до router та signOut
     const listItems = [
-        { name: 'Профіль', handler: () => router.push('/profile') },
-        { name: 'Корзина', handler: () => router.push('/basket') },
-        { name: 'Повідомлення', handler: () => router.push('/message') },
-        { name: 'Налаштування', handler: () => router.push('/user_settings') },
+        { name: 'Профіль', handler: () => {router.push('/profile'); closeMenu();} },
+        { name: 'Корзина', handler: () => {router.push('/basket'); closeMenu();} },
+        { name: 'Повідомлення', handler: () => {router.push('/message'); closeMenu();} },
+        { name: 'Налаштування', handler: () => {router.push('/user_settings'); closeMenu();} },
         { 
             name: 'Вихід', 
             handler: async () => { 
                 await signOut(); 
                 router.push('/'); 
+                closeMenu();
             } 
         }
     ];

@@ -147,6 +147,22 @@ const openRegAndCloseLogin = () => {
 
   const handleAvatarClick = () => setUserModalVisible(!isUserModalVisible);
 
+  const menuRef = useRef<HTMLDivElement>(null);
+
+// Закриття при кліку за межі
+useEffect(() => {
+    // Вказуємо тип MouseEvent
+    const handleClickOutside = (event: MouseEvent) => {
+        // Використовуємо Node, щоб TypeScript не сварився на contains
+        if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            setUserModalVisible(false);
+        }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+}, []);
+
   if (!isLoaded) return null;
 
   return (
@@ -227,18 +243,23 @@ const openRegAndCloseLogin = () => {
 
           <SignedIn>
           {/* Права картинка */}
-          <div className="flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500" onClick={handleAvatarClick}>
+          <div className="relative flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500" 
+          ref={menuRef} 
+          onMouseEnter={() => setUserModalVisible(true)}
+          onMouseLeave={() => setUserModalVisible(false)}
+          >
             <img
+              onClick={handleAvatarClick}
               src="/empty-avatar.png"
               alt="right icon"
               width="100%"
               height="100%"
               className="rounded-[50%] min-h-full min-w-full overflow-hidden object-contain hover:opacity-75 active:opacity-90"
             />
-          </div>
-          <div className="absolute top-full left-full">
-          <ModalUserMenu isVisible={isUserModalVisible}></ModalUserMenu>
-          {isUserModalVisible && <div onClick={handleAvatarClick} className="absolute top-2 right-2 w-5 h-5 z-999 flex justify-center items-center align-middle hover:text-red-800 cursor-pointer">X</div>}
+            <div className="absolute top-full -right-5">
+              <ModalUserMenu isVisible={isUserModalVisible} closeMenu={() => setUserModalVisible(false)}></ModalUserMenu>
+              {isUserModalVisible && <div onClick={handleAvatarClick} className="absolute top-2 right-2 w-5 h-5 z-999 flex justify-center items-center align-middle hover:text-red-800 cursor-pointer">X</div>}
+            </div>
           </div>
           </SignedIn>
         </div>

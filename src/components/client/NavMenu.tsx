@@ -14,6 +14,7 @@ export default function NavMenu() {
 
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
+  const [isMobileMenu, setMobileMenu] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -163,6 +164,8 @@ useEffect(() => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
 }, []);
 
+const handleMobileMenu = () => setMobileMenu(!isMobileMenu);
+
   if (!isLoaded) return null;
 
   return (
@@ -172,23 +175,41 @@ useEffect(() => {
         hidden: { y: -100, opacity: 0 } // Плавне зникнення вгору
       }}
       animate={hidden ? "hidden" : "visible"}
-      transition={{ duration: 0.3, ease: "easeInOut" }} className="sticky h-25 top-0 w-full rounded-xl bg-[#4b0082]/50 border-b border-[#800080] backdrop-blur-md pr-4 z-50">
+      transition={{ duration: 0.3, ease: "easeInOut" }} className="sticky xl:h-25 h-15 top-0 w-full rounded-xl bg-[#4b0082]/50 border-b border-[#800080] backdrop-blur-md pr-4 z-50">
         {/* Контейнер, який ділить простір на 3 частини */}
         <div className="flex items-center justify-between w-full mx-auto min-h-full max-h-full">
           {/* Ліва картинка */}
-          <div className="shrink-0 min-h-full max-h-25">
+          <div className="xl:block hidden shrink-0 min-h-full xl:max-h-25 max-h-15">
             <Image
               src="/logo.png"
               alt="left icon"
               width={180}
               height={100}
-              className="min-h-full max-h-24.75 rounded-xl hover:opacity-75 active:opacity-90"
+              className="min-h-full xl:max-h-24.75 max-h-15 xl:max-w-50 max-w-20 rounded-xl hover:opacity-75 active:opacity-90"
               onClick={handleLogoClick}
             />
           </div>
-
+          <div className="relative z-120 xl:hidden flex flex-col justify-between items-center w-8 h-8 ml-5" onClick={handleMobileMenu}>
+            <div className={`w-full h-1 bg-black transition-all duration-300 ${!isMobileMenu && "rotate-45 absolute top-1/2 translate-y-[-50%]"}`}></div>
+            <div className={`w-full h-1 bg-black ${!isMobileMenu && "hidden"}`}></div>
+            <div className={`w-full h-1 bg-black transition-all duration-300 ${!isMobileMenu && "-rotate-45 absolute top-1/2 translate-y-[-50%]"}`}></div>
+          </div>
           {/* Центральне меню */}
-          <ul className="flex items-center justify-center gap-6 md:gap-8 uppercase mx-auto">
+          <ul className={`${
+  isMobileMenu 
+    ? "left-[calc(-100%+20px)]" // Повернувся на місце
+    : "left-0" // Сховався за лівий край
+} transition-all duration-300 flex z-100 xl:items-center xl:flex-row flex-col items-start xl:rounded-none rounded-xl top-0 xl:justify-center pl-5 xl:pl-0 xl:bg-transparent bg-gray-700 min-w-[70%] xl:min-w-auto md:gap-6 xl:gap-8 absolute xl:static uppercase mx-auto`}>
+            <div className="xl:hidden block shrink-0 min-h-full xl:max-h-25 max-h-15 mt-15">
+            <Image
+              src="/logo.png"
+              alt="left icon"
+              width={180}
+              height={100}
+              className="min-h-full xl:max-h-24.75 max-h-15 xl:max-w-50 max-w-[70%] rounded-xl hover:opacity-75 active:opacity-90"
+              onClick={handleLogoClick}
+            />
+          </div>
             {navItem.map((link: navObj) => {
               // Витягуємо хеш з шляху (наприклад, "#about_us")
               const linkHash = link.path.split("/")[1];
@@ -204,6 +225,7 @@ useEffect(() => {
                       handleNavClick(e, link.path);
                       if (link.path.startsWith("/#"))
                         setActiveHash(link.path.replace("/", ""));
+                        handleMobileMenu();
                     }}
                     href={link.path}
                     className={`${linkStyles} ${isActive ? activeStyle : ""}`}
@@ -229,6 +251,7 @@ useEffect(() => {
                       handleNavClick(e, link.path);
                       if (link.path.startsWith("/#"))
                         setActiveHash(link.path.replace("/", ""));
+                        handleMobileMenu();
                     }}
                     href={link.path}
                     className={`${linkStyles} ${isActive ? activeStyle : ""}`}

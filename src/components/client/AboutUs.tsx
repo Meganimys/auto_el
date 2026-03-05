@@ -132,7 +132,7 @@ export default function FullInfiniteCarousel() {
           return (
             <div
               key={idx}
-              className="min-w-full h-150 rounded-2xl flex items-center justify-center p-4 transition-opacity duration-1000 ease-in-out"
+              className="min-w-full md:h-150 rounded-2xl flex items-center justify-center p-4 transition-opacity duration-1000 ease-in-out"
               style={{
                 opacity: isActive ? 1 : 0.1,
                 backgroundImage: item.image,
@@ -141,7 +141,7 @@ export default function FullInfiniteCarousel() {
               }}
             >
               <div
-                className={`px-10 text-shadow-md text-shadow-black relative w-full h-full rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-2xl`}
+                className={`px-10 text-shadow-md text-shadow-black relative w-full h-full rounded-2xl flex items-center justify-center text-white text-ms md:text-2xl xl:text-3xl font-bold shadow-2xl`}
               >
                 {item.text}
               </div>

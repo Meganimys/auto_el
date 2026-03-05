@@ -80,20 +80,20 @@ export default function UserQuality() {
 
   return (
     <Fragment>
-      <section className="w-full p-20 bg-purple-950 min-h-38 h-auto grid grid-cols-1 place-items-center">
-        <h2 className="block uppercase text-2xl font-bold mb-5">Відгуки</h2>
-        <div className="w-full h-auto grid grid-cols-2 place-items-center gap-20 py-10">
+      <section className="w-full p-5 xl:p-20 bg-purple-950 min-h-38 h-auto grid grid-cols-1 place-items-center">
+        <h2 className="block uppercase text-2xl font-bold mb-5 text-amber-50">Відгуки</h2>
+        <div className="w-full h-auto grid grid-cols-1 xl:grid-cols-2 place-items-center gap-10 xl:gap-20 py-10">
           {userPov ? (
             userPov.map((item) => (
               <section
-                className="w-full bg-purple-800 grid grid-cols-[30%_1fr] items-start border border-gray-400 shadow-md shadow-gray-900"
+                className="w-full bg-purple-800 grid grid-cols-1 md:grid-cols-[30%_1fr] items-start border border-gray-400 shadow-md shadow-gray-900"
                 key={item.id}
               >
-                <div className="min-w-full p-5 grid gap-y-2 justify-center text-center">
+                <div className="min-w-full border-b border-gray-700 md:border-none p-5 grid gap-y-2 justify-center text-center">
                   <img
                     src={item.avatar}
                     alt="User avatar"
-                    className="overflow-hidden w-25 h-25 border-2 rounded-[50%] border-amber-300"
+                    className="overflow-hidden w-25 h-25 mx-auto border-2 rounded-[50%] border-amber-300"
                   />
                   <p className="font-bold">{item.login}</p>
                   <p className="">{item.date}</p>
@@ -131,7 +131,7 @@ export default function UserQuality() {
             </p>
           )}
           <button
-            className="col-span-2 block bg-[#191970] h-12.5 p-3 rounded-2xl font-bold hover:bg-[#256590] hover:scale-[1.05] active:bg-[#252550] active:scale-[1.0] shadow-md shadow-[#252550] transition-colors duration-300 ease-in-out"
+            className="xl:col-span-2 block bg-[#191970] h-12.5 p-3 rounded-2xl font-bold hover:bg-[#256590] hover:scale-[1.05] active:bg-[#252550] active:scale-[1.0] shadow-md shadow-[#252550] transition-colors duration-300 ease-in-out"
             type="button"
             onClick={handleToQuality}
           >

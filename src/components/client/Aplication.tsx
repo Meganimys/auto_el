@@ -7,16 +7,16 @@ export default function Aplication() {
       <section className="w-full h-auto bg-gray-900" id="applay">
         <form
           action=""
-          className="w-full h-auto grid grid-cols-[30%_1fr] gap-y-5 p-10 justify-center mx-auto"
+          className="w-full h-auto grid md:grid-cols-[30%_1fr] grid-cols-1 gap-y-5 p-10 justify-center mx-auto"
           id="aplication-form"
         >
           <h2
-            className="col-span-2 text-center text-2xl font-bold uppercase mb-10"
+            className="md:col-span-2 text-center text-2xl font-bold uppercase mb-10 text-amber-50"
             id="form-header"
           >
             Залиште заявку на консультацію
           </h2>
-          <label htmlFor="" className="text-left px-5" id="name-form-label">
+          <label htmlFor="" className="text-left md:px-5 text-amber-50" id="name-form-label">
             Введіть своє ім'я:
           </label>
           <input
@@ -27,7 +27,7 @@ export default function Aplication() {
             minLength={3}
             required
           />
-          <label htmlFor="" className="text-left px-5" id="email-form-label">
+          <label htmlFor="" className="text-left md:px-5 text-amber-50" id="email-form-label">
             Введіть пошту для зворотнього звязку:
           </label>
           <input
@@ -38,7 +38,7 @@ export default function Aplication() {
             minLength={3}
             required
           />
-          <label htmlFor="" className="text-left px-5" id="category-form-label">
+          <label htmlFor="" className="text-left md:px-5 text-amber-50" id="category-form-label">
             Виберіть тип проблеми:
           </label>
           <select
@@ -53,7 +53,7 @@ export default function Aplication() {
             <option value="Проблема з паливною системою">Проблема з паливною системою</option>
             <option value="Інше">Інше</option>
           </select>
-          <label htmlFor="" className="text-left px-5" id="textarea-form-label">
+          <label htmlFor="" className="text-left block md:px-5 text-amber-50" id="textarea-form-label">
             Детально опишіть проблему:
           </label>
           <textarea
@@ -65,7 +65,7 @@ export default function Aplication() {
           ></textarea>
           <button
             type="submit"
-            className="col-span-2 mx-auto bg-[#191970] h-12.5 p-3 rounded-2xl font-bold hover:bg-[#256590] hover:scale-[1.05] active:bg-[#252550] active:scale-[1.0] shadow-md shadow-[#252550] transition-colors duration-300 ease-in-out"
+            className="md:col-span-2 block mx-auto bg-[#191970] h-12.5 p-3 rounded-2xl font-bold hover:bg-[#256590] hover:scale-[1.05] active:bg-[#252550] active:scale-[1.0] shadow-md shadow-[#252550] transition-colors duration-300 ease-in-out text-amber-50"
           >
             Відправити заявку
           </button>

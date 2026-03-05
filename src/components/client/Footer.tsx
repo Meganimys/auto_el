@@ -40,10 +40,10 @@ export default function Footer() {
           ></iframe>
         </section>
         <section
-          className="grid grid-cols-2 items-center bg-indigo-950"
+          className="grid grid-cols-2 items-start md:items-center bg-indigo-950 pl-5 py-5 md:py-20 text-sm md:text-xl "
           id="footer-corp-info"
         >
-          <section className="flex flex-col max-w-150 mx-auto">
+          <section className="flex flex-col md:max-w-150 mx-auto">
             <Link href="/police" className="hover:underline" id="footer-menu">
               Політика конфеденційності
             </Link>
@@ -67,7 +67,7 @@ export default function Footer() {
               Усі права захищені
             </p>
           </section>
-          <section className="flex flex-col max-w-150 mx-auto py-20">
+          <section className="flex flex-col md:max-w-150 mx-auto">
             <p className="">Контакти</p>
             <Link href="tel:+380123456789" className="hover:underline">
               +380123456789

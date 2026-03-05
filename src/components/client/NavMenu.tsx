@@ -178,7 +178,25 @@ const handleMobileMenu = () => setMobileMenu(!isMobileMenu);
       transition={{ duration: 0.3, ease: "easeInOut" }} className="sticky xl:h-25 h-15 top-0 w-full rounded-xl bg-[#4b0082]/50 border-b border-[#800080] backdrop-blur-md pr-4 z-50">
         {/* Контейнер, який ділить простір на 3 частини */}
         <div className="flex items-center justify-between w-full mx-auto min-h-full max-h-full">
+          <div className="relative z-120 xl:hidden flex flex-col justify-between items-center w-8 h-8 ml-5" onClick={handleMobileMenu}>
+            <div className={`w-full h-1 bg-black transition-all duration-300 ${isMobileMenu && "rotate-45 absolute top-1/2 translate-y-[-50%]"}`}></div>
+            <div className={`w-full h-1 bg-black ${isMobileMenu && "hidden"}`}></div>
+            <div className={`w-full h-1 bg-black transition-all duration-300 ${isMobileMenu && "-rotate-45 absolute top-1/2 translate-y-[-50%]"}`}></div>
+          </div>
           {/* Ліва картинка */}
+          <SignedOut>
+          <div className="xl:block shrink-0 min-h-full xl:max-h-25 max-h-15">
+            <Image
+              src="/logo.png"
+              alt="left icon"
+              width={180}
+              height={100}
+              className="min-h-full xl:max-h-24.75 max-h-15 xl:max-w-50 max-w-20 rounded-xl hover:opacity-75 active:opacity-90"
+              onClick={handleLogoClick}
+            />
+          </div>
+          </SignedOut>
+          <SignedIn>
           <div className="xl:block hidden shrink-0 min-h-full xl:max-h-25 max-h-15">
             <Image
               src="/logo.png"
@@ -189,18 +207,14 @@ const handleMobileMenu = () => setMobileMenu(!isMobileMenu);
               onClick={handleLogoClick}
             />
           </div>
-          <div className="relative z-120 xl:hidden flex flex-col justify-between items-center w-8 h-8 ml-5" onClick={handleMobileMenu}>
-            <div className={`w-full h-1 bg-black transition-all duration-300 ${isMobileMenu && "rotate-45 absolute top-1/2 translate-y-[-50%]"}`}></div>
-            <div className={`w-full h-1 bg-black ${isMobileMenu && "hidden"}`}></div>
-            <div className={`w-full h-1 bg-black transition-all duration-300 ${isMobileMenu && "-rotate-45 absolute top-1/2 translate-y-[-50%]"}`}></div>
-          </div>
+          </SignedIn>
           {/* Центральне меню */}
           <ul className={`${
   isMobileMenu 
     ? "left-0" // Повернувся на місце
     : "left-[calc(-100%+20px)]" // Сховався за лівий край
 } transition-all duration-300 flex z-100 xl:items-center xl:flex-row flex-col items-start xl:rounded-none rounded-xl top-0 xl:justify-center pl-5 xl:pl-0 xl:bg-transparent bg-gray-700 min-w-[70%] xl:min-w-auto md:gap-6 xl:gap-8 absolute xl:static uppercase mx-auto`}>
-            <div className="xl:hidden block shrink-0 min-h-full xl:max-h-25 max-h-15 mt-15">
+            <div className="xl:hidden block shrink-0 min-h-full xl:max-h-25 max-h-15 mt-15" onClick={handleMobileMenu}>
             <Image
               src="/logo.png"
               alt="left icon"
@@ -266,7 +280,7 @@ const handleMobileMenu = () => setMobileMenu(!isMobileMenu);
 
           <SignedIn>
           {/* Права картинка */}
-          <div className="relative flex justify-center shrink-0 border-2 border-amber-50 max-w-20 max-h-20 min-w-20 min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500" 
+          <div className="relative flex justify-center shrink-0 border-2 border-amber-50 max-w-10 max-h-10 min-w-10 min-h-10 xl:max-w-20 xl:max-h-20 xl:min-w-20 xl:min-h-20 rounded-[50%] hover:border-amber-300 active:border-amber-500" 
           ref={menuRef} 
           onMouseEnter={() => setUserModalVisible(true)}
           onMouseLeave={() => setUserModalVisible(false)}

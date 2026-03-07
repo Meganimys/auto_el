@@ -26,6 +26,7 @@ model User {
   
   // Связь с товарами в корзине
   cart      CartItem[] 
+  application Applications[]
 }
 
 model Product {
@@ -88,4 +89,14 @@ model ProductType {
   category    ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   products  Product[]
   @@unique([name, categoryId])
+}
+
+model Applications {
+  id        Int @id @default(autoincrement())
+  userId String
+  name String 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email String
+  problemType String
+  message String
 }

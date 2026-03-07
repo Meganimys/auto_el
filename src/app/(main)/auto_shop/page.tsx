@@ -137,15 +137,15 @@ const handleMouseLeave = () => {
   }
 
   return (
-    <div className="p-4 py-20">
-      <h1 className="text-center w-full mb-20 text-2xl font-bold uppercase">
+    <div className="p-4 py-20 bg-gray-900 rounded-t-xl">
+      <h1 className="text-center w-full mb-20 text-2xl font-bold uppercase text-blue-50">
         Auto Shop
       </h1>
       {
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
   {autoShopLinks.map((link) => (
     /* 1. Картка має relative і фіксовану висоту h-fit або конкретну h-14 */
-    <li key={link.id} className="relative border rounded p-2 h-14 flex items-center justify-center cursor-pointer"
+    <li key={link.id} className="relative border rounded bg-slate-950 text-amber-100 p-2 h-14 flex items-center justify-center cursor-pointer"
     onMouseEnter={() => handleMouseEnter(link.id)}
     onMouseLeave={handleMouseLeave}
     >

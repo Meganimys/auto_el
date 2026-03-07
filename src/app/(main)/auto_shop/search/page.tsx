@@ -14,7 +14,7 @@ export default async function SearchPage({
   const query = params.query || "";
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8 px-4 bg-gray-900">
       {/* Верхняя панель: Хлебные крошки и Форма */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <nav className="text-sm">
@@ -29,7 +29,7 @@ export default async function SearchPage({
       </div>
 
       {/* Заголовок результатов */}
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-2xl font-bold mb-6 text-amber-50">
         {query ? (
           <>Результати пошуку: <span className="text-blue-600">"{query}"</span></>
         ) : (

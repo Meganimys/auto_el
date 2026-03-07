@@ -212,7 +212,7 @@ const handleMobileMenu = () => setMobileMenu(!isMobileMenu);
           <ul className={`${
   isMobileMenu 
     ? "left-0" // Повернувся на місце
-    : "left-[calc(-100%+20px)]" // Сховався за лівий край
+    : "left-[calc(-120%)]" // Сховався за лівий край
 } transition-all duration-300 flex z-100 xl:items-center xl:flex-row flex-col items-start xl:rounded-none rounded-xl top-0 xl:justify-center pl-5 xl:pl-0 xl:bg-transparent bg-gray-700 min-w-[70%] xl:min-w-auto md:gap-6 xl:gap-8 absolute xl:static uppercase mx-auto`}>
             <div className="xl:hidden block shrink-0 min-h-full xl:max-h-25 max-h-15 mt-15" onClick={handleMobileMenu}>
             <Image
@@ -295,7 +295,7 @@ const handleMobileMenu = () => setMobileMenu(!isMobileMenu);
             />
             <div className="absolute top-full -right-5">
               <ModalUserMenu isVisible={isUserModalVisible} closeMenu={() => setUserModalVisible(false)}></ModalUserMenu>
-              {isUserModalVisible && <div onClick={handleAvatarClick} className="absolute top-2 right-2 w-5 h-5 z-999 flex justify-center items-center align-middle hover:text-red-800 cursor-pointer">X</div>}
+              {isUserModalVisible && <div onClick={handleAvatarClick} className="absolute top-2 right-2 w-5 h-5 z-999 flex justify-center items-center align-middle text-orange-700 hover:text-red-800 cursor-pointer">X</div>}
             </div>
           </div>
           </SignedIn>

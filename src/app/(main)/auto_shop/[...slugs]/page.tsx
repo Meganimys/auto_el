@@ -136,11 +136,11 @@ export default function CategoryPage({ params }: CategoryProps) {
       ? currentMainCategory?.uncategory[subCatIndex]
       : "Категорія";
   return (
-    <div className="py-8 relative">
+    <div className="py-8 relative bg-gray-900 p-5 rounded-t-xl">
       {/* Додаємо flex та justify-between, щоб рознести елементи по боках */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         {/* Хлібні крихти (Breadcrumbs) */}
-        <h2 className="flex flex-wrap items-center gap-2">
+        <h2 className="flex flex-wrap items-center gap-2 text-blue-600">
           <Link className="hover:underline text-blue-600" href="/auto_shop">
             {`Категорії | ${currentMainCategory?.name || "Категорія"}`}
           </Link>
@@ -185,10 +185,10 @@ export default function CategoryPage({ params }: CategoryProps) {
       </div>
 
       {/* Заголовки нижче */}
-      <h1 className="text-2xl font-bold mb-4 text-center mt-4 uppercase">
+      <h1 className="text-2xl font-bold mb-4 text-center mt-4 uppercase text-amber-50">
         {currentMainCategory?.name || "Категорія"}
       </h1>
-      <h2 className="text-xl font-bold mb-4 text-center mt-4 uppercase">
+      <h2 className="text-xl font-bold mb-4 text-center mt-4 uppercase text-amber-50">
         {displayName}
       </h2>
 

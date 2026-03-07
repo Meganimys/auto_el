@@ -96,7 +96,7 @@ const ModalAuthorization = forwardRef(
     // 2. В divStyle убираем w-[34vw]. max-h-[90vh] на случай очень маленьких экранов (телефонов),
     // чтобы модалка не ушла за границы экрана.
     const divStyle: string =
-      "relative w-[95vw] max-w-[450px] font-bold p-6 md:p-8 text-amber-100 bg-gray-900 flex flex-col items-center rounded-[20px] border-2 border-yellow-800 shadow-2xl overflow-y-auto max-h-[95vh]";
+      "relative w-[95vw] max-w-[450px] font-bold px-6 py-10 md:p-8 text-amber-100 bg-gray-900 flex flex-col items-center rounded-[20px] border-2 border-yellow-800 shadow-2xl overflow-y-auto max-h-[95vh]";
 
     // 3. Инпуты должны занимать всю ширину контейнера формы.
     const inputTextStyle: string =

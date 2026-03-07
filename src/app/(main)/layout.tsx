@@ -5,7 +5,7 @@ import Footer from "@/components/client/Footer";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
-    <section className="max-w-[90%] mx-auto rounded-xl py-25">
+    <section className="md:max-w-[90%] mx-auto rounded-xl md:py-25">
       <NavMenu />
       <main>{children}</main>
       <Footer />

@@ -22,7 +22,7 @@ export default function SearchForm({ initialQuery }: { initialQuery: string }) {
         <input
           type="search"
           placeholder="Пошук..."
-          className="p-2 border rounded w-full pr-10 focus:ring-2 focus:ring-blue-500 outline-none"
+          className="p-2 border border-gray-500 text-amber-50 rounded w-full pr-10 focus:ring-2 focus:ring-blue-500 outline-none"
           value={searchItem}
           onChange={(e) => setSearchItem(e.target.value)}
         />

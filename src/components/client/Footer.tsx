@@ -16,11 +16,11 @@ export default function Footer() {
     <Fragment>
       <footer className="bg-neutral-900 rounded-b-xl" id="footer">
         <section
-          className="grid grid-cols-2 items-center bg-gray-950"
+          className="grid md:grid-cols-2 grid-cols-1 text-gray-500 items-center bg-gray-950"
           id="adress"
         >
           <address
-            className="max-w-50 mx-auto font-bold italic underline"
+            className="max-w-50 mx-auto font-bold italic underline py-5 md:py-0"
             id="footer-adress"
           >
             <p className="">Рівненська область</p>
@@ -40,7 +40,7 @@ export default function Footer() {
           ></iframe>
         </section>
         <section
-          className="grid grid-cols-2 items-start md:items-center bg-indigo-950 pl-5 py-5 md:py-20 text-sm md:text-xl "
+          className="grid grid-cols-2 items-start md:items-center bg-stone-900 pl-5 py-5 md:py-20 text-sm md:text-xl text-gray-500"
           id="footer-corp-info"
         >
           <section className="flex flex-col md:max-w-150 mx-auto">
@@ -101,8 +101,8 @@ export default function Footer() {
             </Link>
           </section>
         </section>
-        <p className="font-bold italic text-center py-5">AUTO-EL-SANCHO</p>
-        <data value="" className="block text-center w-full py-5">
+        <p className="font-bold italic text-center py-5 text-amber-50">AUTO-EL-SANCHO</p>
+        <data value="" className="block text-center w-full py-5 text-amber-50">
           {currentData 
     ? `${currentData.toLocaleDateString()} ${currentData.toLocaleTimeString()}` 
     : "Завантаження..."}

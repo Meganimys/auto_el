@@ -155,7 +155,7 @@ export default function AddProductForm({
       <input
         {...register("item_name")}
         placeholder="Назва"
-        className="border p-2 min-w-full placeholder-[#ededed] rounded"
+        className="border p-2 min-w-full placeholder-amber-50 rounded border-amber-50 text-amber-50"
       />
       {errors.item_name && (
         <p className="text-red-500">{errors.item_name.message}</p>
@@ -168,7 +168,7 @@ export default function AddProductForm({
         {...register("item_price", {
           valueAsNumber: true,
         })}
-        className="border p-2 w-full rounded"
+        className="border p-2 w-full rounded border-amber-50 text-amber-50"
       />
       {errors.item_price && (
         <p className="text-red-500">{errors.item_price.message}</p>
@@ -177,7 +177,7 @@ export default function AddProductForm({
       {/* CATEGORY */}
       <select
         {...register("item_category")}
-        className="border p-2 w-full rounded"
+        className="border p-2 w-full rounded border-amber-50 text-amber-50"
       >
         <option value="">Оберіть</option>
         {categories.map((c) => (
@@ -191,7 +191,7 @@ export default function AddProductForm({
       )}
 
       {/* TYPE */}
-      <select {...register("item_type")} className="border p-2 w-full rounded">
+      <select {...register("item_type")} className="border p-2 w-full rounded border-amber-50 text-amber-50">
         <option value="">Оберіть</option>
         {itemTypes.map((t) => (
           <option key={t.id} value={t.id}>
@@ -205,19 +205,19 @@ export default function AddProductForm({
 
       <input
         type="text"
-        className="border p-2 w-full rounded"
+        className="border p-2 w-full rounded border-amber-50 text-amber-50 placeholder-amber-50"
         {...register("item_manufacturer")}
         placeholder="Виробник"
       />
       <input
         type="text"
-        className="border p-2 w-full rounded"
+        className="border p-2 w-full rounded border-amber-50 text-amber-50 placeholder-amber-50"
         {...register("item_model")}
         placeholder="Модель"
       />
       <input
         type="text"
-        className="border p-2 w-full rounded"
+        className="border p-2 w-full rounded border-amber-50 text-amber-50 placeholder-amber-50"
         {...register("item_year")}
         placeholder="Рік випуску"
       />
@@ -254,7 +254,7 @@ export default function AddProductForm({
 
           processFiles(e.dataTransfer.files);
         }}
-        className={`border h-50 p-6 grid place-items-center cursor-pointer rounded ${
+        className={`border h-50 p-6 grid place-items-center cursor-pointer rounded border-amber-50 text-amber-50 ${
           isDragging
             ? "border-green-500 shadow-md shadow-green-700 text-green-500"
             : ""

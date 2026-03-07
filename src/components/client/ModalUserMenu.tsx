@@ -35,7 +35,7 @@ export default function ModalUserMenu({ isVisible, closeMenu }: ModalUserMenuPro
         <ul className="absolute top-full right-0 flex flex-col justify-center text-center bg-gray-900 border border-yellow-800 p-2 rounded-lg z-50">
             {listItems.map((item, index) => (
                 <li 
-                    className="cursor-pointer hover:text-yellow-500 p-2 border-b border-gray-800 last:border-none" 
+                    className="cursor-pointer text-amber-50 hover:text-yellow-500 p-2 border-b border-gray-800 last:border-none" 
                     key={index} 
                     onClick={item.handler}
                 >

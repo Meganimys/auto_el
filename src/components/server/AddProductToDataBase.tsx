@@ -15,7 +15,7 @@ export default async function AddProductToDataBase() {
   });
   if (isAdmin) {
     return (
-      <div className="min-w-full flex flex-col justify-center py-20 px-5">
+      <div className="min-w-full flex flex-col justify-center py-20 px-5 bg-gray-950 rounded-t-xl">
         <h1 className="text-2xl font-bold uppercase text-center text-red-600">
           Додати товар
         </h1>

@@ -7,7 +7,7 @@ export default function QualityApp() {
   return (
     <Fragment>
       <form
-        className="grid gap-y-5 grid-cols-1 items-start py-20 px-5 bg-gray-900"
+        className="grid gap-y-5 grid-cols-1 items-start py-20 px-5 bg-gray-900 text-amber-50"
         style={{ borderTopLeftRadius: "20px", borderTopRightRadius: "20px" }}
       >
         <h2 className="text-center text-2xl font-bold uppercase">
@@ -64,8 +64,8 @@ export default function QualityApp() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 py-10">
-          <section className="grid grid-cols-[1fr_10%] gap-x-5 items-center gap-y-2">
+        <div className="grid md:grid-cols-2 grid-cols-1 py-10">
+          <section className="grid grid-cols-[1fr_10%] gap-x-5 items-center gap-y-2 mb-5 md:mb-0">
             <h3 className="col-span-2 text-green-300">Плюси:</h3>
             <label
               htmlFor="service_quality"

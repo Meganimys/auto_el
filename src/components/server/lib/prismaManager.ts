@@ -2,17 +2,32 @@
 
 import { put } from '@vercel/blob'
 import { prisma } from "../lib/prisma";
+import { JSDOM } from 'jsdom';
+import DOMPurify from 'dompurify';
 
 export async function saveProductToDatabase(formData: FormData) {
+
+    const { window } = new JSDOM('');
+    const purify = DOMPurify(window);
+
     const item_name = formData.get("item_name") as string;
     const item_price = parseFloat(formData.get("item_price") as string);
     const item_category = parseInt(formData.get("item_category") as string);
     const item_type = parseInt(formData.get("item_type") as string);
-    const item_description = formData.get("item_description") as string;
+    const raw_description = formData.get("item_description") as string;
     const item_gallery = formData.getAll("item_gallery") as File[];
     const item_manufacturer = formData.get("item_manufacturer") as string;
     const item_model = formData.get("item_model") as string;
     const item_year = formData.get("item_year") as string;
+
+    const safeInput = raw_description.replace(/[\x00-\x1F\x7F-\x9F]/g, "");
+
+    const item_description = purify.sanitize(safeInput, {
+  ALLOWED_TAGS: ['h1', 'h2', 'h3', 'p', 'br', 'b', 'i', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'span'],
+  ALLOWED_ATTR: ['href', 'target', 'class'],
+  FORBID_TAGS: ['img', 'style', 'script', 'iframe'],
+  // STRIP_OUT_CONTROL_CHARS видалено, оскільки він не підтримується типами
+});
 
     const result = await handleImageUpload(item_gallery);
 
@@ -97,4 +112,29 @@ export async function saveUserToDatabase(formData: FormData) {
             console.error("Ошибка БД:", dbError);
             return { success: false, error: "Ошибка при записи в базу" };
         }
+    }
+
+    export async function getProductTypes(category: number) {
+        const types = await prisma.productType.findMany({
+            where: {
+                categoryId: category,
+            },
+            select: {
+                id: true,
+                name: true,
+            },
+        });
+
+        return types;
+    }
+
+    export async function getProductCategories() {
+        const categories = await prisma.productCategory.findMany({
+            select: {
+                id: true,
+                name: true,
+            }
+        });
+
+        return categories;
     }

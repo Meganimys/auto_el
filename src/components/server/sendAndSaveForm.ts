@@ -18,8 +18,7 @@ export async function sendAndSaveMessage(FormData: FormData) {
     const mailOptions = {
     from: process.env.GMAIL_USER,
     to: 'auto.el.sancho@gmail.com', // Куди ви хочете отримувати листи
-    subject: `Нове повідомлення від ${name}`,
-    categ: category,
+    subject: `${category} | Від: ${name}`,
     text: `Від: ${email}\n\n${message}`,
     html: `<p><strong>Від:</strong> ${email}</p><p>${message}</p>`,
   };

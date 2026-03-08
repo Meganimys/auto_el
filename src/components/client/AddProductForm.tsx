@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { saveProductToDatabase } from "../server/lib/prismaManager";
+import { getProductTypes } from "../server/lib/prismaManager";
 
 /* ================= SCHEMA ================= */
 
@@ -51,24 +52,39 @@ interface Category {
   name: string;
 }
 
-interface ProductType {
-  id: number;
-  name: string;
-  categoryId: number;
+interface Props {
+  categories: Category[];
 }
 
-export default function AddProductForm({
-  categories,
-  itemTypes,
-}: {
-  categories: Category[];
-  itemTypes: ProductType[];
-}) {
+export default function AddProductForm({ categories }: Props) {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [description, setDescription] = useState("");
   const [mounted, setMounted] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState<number | null>(null);
+  const [productTypes, setProductTypes] = useState<
+    { name: string; id: number }[] | null
+  >(null);
+
+  useEffect(() => {
+    // Не робимо запит, якщо категорія не обрана
+    if (currentCategory === null) {
+      setProductTypes(null);
+      return;
+    }
+
+    const getTypes = async () => {
+      try {
+        const data = await getProductTypes(currentCategory);
+        setProductTypes(data);
+      } catch (error) {
+        console.error("Помилка завантаження типів:", error);
+      }
+    };
+
+    getTypes();
+  }, [currentCategory]);
 
   const {
     register,
@@ -79,6 +95,7 @@ export default function AddProductForm({
     reset,
   } = useForm<AddProductFormData>({
     resolver: zodResolver(AddProductSchema),
+    mode: "onChange",
     defaultValues: {
       item_name: "",
       item_price: 0,
@@ -178,6 +195,12 @@ export default function AddProductForm({
       <select
         {...register("item_category")}
         className="border p-2 w-full rounded border-amber-50 text-amber-50"
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+          const value = e.target.value;
+          // Якщо вибрано порожній рядок (пункт "Оберіть"), ставимо null
+          const categoryId = value === "" ? null : Number(value);
+          setCurrentCategory(categoryId);
+        }}
       >
         <option value="">Оберіть</option>
         {categories.map((c) => (
@@ -191,14 +214,19 @@ export default function AddProductForm({
       )}
 
       {/* TYPE */}
-      <select {...register("item_type")} className="border p-2 w-full rounded border-amber-50 text-amber-50">
-        <option value="">Оберіть</option>
-        {itemTypes.map((t) => (
-          <option key={t.id} value={t.id}>
-            {t.name}
-          </option>
-        ))}
-      </select>
+      {productTypes && (
+        <select
+          {...register("item_type")}
+          className="border p-2 w-full rounded border-amber-50 text-amber-50"
+        >
+          <option value="">Оберіть</option>
+          {productTypes.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.name}
+            </option>
+          ))}
+        </select>
+      )}
       {errors.item_type && (
         <p className="text-red-500">{errors.item_type.message}</p>
       )}

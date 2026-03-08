@@ -14,8 +14,8 @@ import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  email: z.string().email("Неверный формат"),
-  password: z.string().min(8, "Минимум 8 символов"),
+  email: z.string().email("Неправильний формат електронної пошти"),
+  password: z.string().min(8, "Мінімум 8 символів"),
 });
 
 type AuthorizationFormData = z.infer<typeof formSchema>;

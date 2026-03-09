@@ -21,7 +21,10 @@ datasource db {
 model User {
   id        String     @id
   login     String     @unique
+  fullName  String     @default("")
+  phone     String     @default("")
   email     String     @unique
+  avatarUrl String     @default("/empty-avatar.png")
   createdAt DateTime   @default(now())
   
   // Связь с товарами в корзине

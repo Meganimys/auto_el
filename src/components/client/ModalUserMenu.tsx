@@ -2,15 +2,41 @@
 
 import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { getCurrentUser } from "../server/getUser";
+import { useEffect, useState } from "react";
 
 interface ModalUserMenuProps {
     isVisible: boolean;
     closeMenu: () => void;
 };
 
+type UserType = {
+    id: string;
+    login: string;
+    fullName: string;
+    phone: string;
+    email: string;
+    avatarUrl: string;
+    createdAt: Date;
+};
+
 export default function ModalUserMenu({ isVisible, closeMenu }: ModalUserMenuProps) {
-    const router = useRouter();
     const { signOut } = useClerk();
+    const [user, setUser] = useState<UserType|null>(); // додайте свій тип замість any
+    const router = useRouter();
+
+    useEffect(() => {
+        if (isVisible) {
+            getCurrentUser().then(data => setUser(data));
+        }
+    }, [isVisible]);
+
+    const handleSettingsClick = () => {
+        if (user?.login) {
+            router.push(`/profile/user_settings?user=${user.login}`);
+            closeMenu();
+        }
+    };
 
     // Визначаємо пункти меню всередині компонента, 
     // щоб вони мали доступ до router та signOut
@@ -18,7 +44,7 @@ export default function ModalUserMenu({ isVisible, closeMenu }: ModalUserMenuPro
         { name: 'Профіль', handler: () => {router.push('/profile'); closeMenu();} },
         { name: 'Корзина', handler: () => {router.push('/basket'); closeMenu();} },
         { name: 'Повідомлення', handler: () => {router.push('/message'); closeMenu();} },
-        { name: 'Налаштування', handler: () => {router.push('/user_settings'); closeMenu();} },
+        { name: 'Налаштування', handler: () => {handleSettingsClick(); closeMenu();} },
         { 
             name: 'Вихід', 
             handler: async () => { 

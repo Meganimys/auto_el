@@ -132,7 +132,7 @@ export default function FullInfiniteCarousel() {
           return (
             <div
               key={idx}
-              className="min-w-full md:h-150 rounded-2xl flex items-center justify-center p-4 transition-opacity duration-1000 ease-in-out"
+              className="min-w-full md:h-150 rounded-2xl flex items-center justify-center md:p-4 py-8 px-4 transition-opacity duration-1000 ease-in-out"
               style={{
                 opacity: isActive ? 1 : 0.1,
                 backgroundImage: item.image,
@@ -165,7 +165,7 @@ export default function FullInfiniteCarousel() {
       </button>
 
       {/* Індикатори (Крапки) */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 px-4 py-2 bg-black/20 backdrop-blur-md rounded-full">
+      <div className="absolute md:bottom-8 bottom-2 left-1/2 -translate-x-1/2 flex gap-3 px-4 py-2 bg-black/20 backdrop-blur-md rounded-full">
         {items.map((_, i) => (
           <button
             key={i}

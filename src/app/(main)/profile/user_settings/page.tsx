@@ -12,7 +12,7 @@ export default async function UserSettings({
   const login = params.user || "Гість";
 
   return (
-    <div className="p-4 bg-cyan-950 text-amber-100 rounded-xl">
+    <div className="p-4 bg-cyan-950 text-amber-100 rounded-t-xl">
       <h1 className="my-10 uppercase text-center text-xl md:text-2xl">{`Налаштування сторінки ${login}`}</h1>
       <form action="" className="flex flex-col gap-y-2 md:max-w-2/3 md:mx-auto">
         <label htmlFor="" className="">Введіть посилання на аватар:</label>

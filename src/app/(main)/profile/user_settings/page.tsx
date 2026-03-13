@@ -5,15 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 
-// Серверная функция для обработки данных формы
-async function updateUserInfo(formData: FormData) {
-  'use server';
-  const avatar = formData.get('avatar');
-  const name = formData.get('name');
-  // Логика обновления данных (например, запрос к БД)
-  console.log('Обновление данных:', { avatar, name });
-}
-
 export default function UserSettings() {
   const { isLoaded, user } = useUser();
   const [isVerifying, setVerifying] = useState(false);
@@ -44,7 +35,7 @@ export default function UserSettings() {
       </h1>
       
       {/* action={updateUserInfo} использует серверный экшн */}
-      <form action={updateUserInfo} className="flex flex-col gap-y-2 md:max-w-2/3 md:mx-auto">
+      <form action="" className="flex flex-col gap-y-2 md:max-w-2/3 md:mx-auto">
         <label htmlFor="avatar" className="">Введіть посилання на аватар:</label>
         <input name="avatar" type="text" className="border-2 border-amber-50 h-10 rounded-xl p-4 text-black" />
         

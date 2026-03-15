@@ -4,6 +4,7 @@ import { put } from '@vercel/blob'
 import { prisma } from "../lib/prisma";
 import { JSDOM } from 'jsdom';
 import DOMPurify from 'dompurify';
+import { auth } from '@clerk/nextjs/server';
 
 export async function saveProductToDatabase(formData: FormData) {
 
@@ -137,4 +138,19 @@ export async function saveUserToDatabase(formData: FormData) {
         });
 
         return categories;
+    }
+
+    export async function getUserEmail() {
+        const userId = await auth();
+        if(!userId.userId) return null;
+        const userEmail = await prisma.user.findUnique({
+            where: {
+                id: userId.userId,
+            },
+            select: {
+                email: true,
+            }
+        });
+
+        return userEmail?.email;
     }

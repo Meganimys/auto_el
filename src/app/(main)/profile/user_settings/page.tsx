@@ -74,7 +74,7 @@ export default function UserSettings() {
         {isVerifyed && <p>{userEmail} ✅ Емейл верифіковано!</p>}
         {isVerifyed ? <input name="email" type="text" className="border-2 border-amber-50 h-10 rounded-xl p-4 text-black" /> : <p className="h-10 text-red-500">⚠️ Ектронна пошта <span className='text-green-800 font-bold'>{userEmail}</span> не підтверджена! Потрібна верифікація</p>}
 
-        {isVerifying && <div>
+        {isVerifying && <div className='flex flex-col gap-y-2 md:max-w-2/3 md:mx-auto'>
             <label htmlFor="email" className="">Введіть код підтвердження відправлений на пошту:</label>
             <input name="code" type="text" onChange={(e) => setCode(e.target.value)} className="border-2 border-amber-50 h-10 rounded-xl p-4 text-black" />
             <button type='button' onClick={handleVerifyEmail} className="cursor-pointer bg-orange-800 md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl hover:bg-orange-700 my-5">Верифікувати пошту</button>

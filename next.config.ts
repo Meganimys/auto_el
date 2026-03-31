@@ -11,6 +11,26 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.public.blob.vercel-storage.com',
       },
+      {
+        protocol: 'https',
+        hostname: '://clerk.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.clerk.dev', // Домен для завантажених фото (з вашої помилки)
+      },
+      {
+      protocol: 'https',
+      hostname: '**.clerk.com', // Дозволяє всі піддомени clerk.com
+    },
+    {
+      protocol: 'https',
+      hostname: '**.clerk.dev', // Дозволяє всі піддомени clerk.dev
+    },
+    {
+      protocol: 'https',
+      hostname: '**.public.blob.vercel-storage.com',
+    },
     ],
   },
   // Додаємо ліміт для Server Actions

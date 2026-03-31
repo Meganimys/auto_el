@@ -7,8 +7,9 @@ export async function changeUserData(formData:FormData) {
     const userName = formData.get('userName') as string;
     const userPhone = formData.get('userPhone') as string;
     const userEmail = formData.get('userEmail') as string;
-    const userImage = formData.getAll('userImage') as File[];
+    const userAvatar = formData.get("userImage") as File;
     const userId = formData.get("userId") as string;
+    console.log('File: ', userAvatar);
 
     try {
 
@@ -48,8 +49,7 @@ export async function changeUserData(formData:FormData) {
             }
         })
     }
-    if(userImage.length > 0 && userId) {
-        const userAvatar = userImage[0] as File;
+    if(userAvatar && userAvatar.size > 0 && userId) {
         const response = await client.users.updateUserProfileImage(userId, {
             file: userAvatar,
         });

@@ -129,10 +129,7 @@ export default function UserSettings() {
       formData.append("userEmail", data.userEmail);
       formData.append("userPhone", data.userPhone);
       formData.append("userId", user?.id);
-  
-      Array.from(data.userImage as FileList | File[]).forEach((file) => {
-        formData.append("item_gallery", file as File); // Додаємо 'as File'
-      });
+      formData.append("userImage", data.userImage[0] as File); // Додаємо 'as File'
       await changeUserData(formData);
   
       reset();
@@ -140,7 +137,6 @@ export default function UserSettings() {
     };
 
   const { ref: galleryRef, ...galleryRest } = register("userImage");
-  console.log("Помилки форми:", errors);
 
   return (
     <div className="p-4 bg-cyan-950 text-amber-100 rounded-t-xl">

@@ -304,6 +304,10 @@ export default function UserSettings() {
     </p>
   )}
 
+  {emailErrors.userEmail && (
+    <p className="text-red-500 text-sm">{emailErrors.userEmail.message}</p>
+  )}
+
   {emailStatus === "same" && (
   <p className="text-red-500 text-sm font-semibold">
     Це ваш поточний емейл
@@ -363,7 +367,7 @@ export default function UserSettings() {
   type="submit" 
   disabled={isDisabled}
   className={`h-10 rounded-xl my-5 transition-all ${
-    isDisabled
+    isDisabled && !emailErrors.userEmail
       ? "bg-gray-600 cursor-not-allowed md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl opacity-50"
       : "bg-green-700 md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl hover:bg-green-600 cursor-pointer"
   }`}

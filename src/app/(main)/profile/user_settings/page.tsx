@@ -35,6 +35,8 @@ export default function UserSettings() {
   const [changeEmailCode, setChangeEmailCode] = useState("");
   const [userCode, setUserCode] = useState("");
   const [isPermittedToChangeEmail, setIsPermittedToChangeEmail] = useState(false);
+  const [strictDisable, setStrictDisable] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(() => {
     getEmailFromDataBase();
@@ -204,11 +206,13 @@ export default function UserSettings() {
     const code = await generateEmailDefenderCode(userEmail as string);
     setChangeEmailCode(code);
     setIsChangeEmail(true);
+    setIsButtonDisabled(!isButtonDisabled);
   };
 
   const handleVerifyChangeEmailCode = async () => {
     const isValid = await checkEmailDefenderCode(changeEmailCode, userCode);
     setIsPermittedToChangeEmail(isValid);
+    setStrictDisable(!isValid);
     setIsChangeEmail(false);
     setChangeEmailCode("");
      if (!isValid) {
@@ -450,18 +454,18 @@ export default function UserSettings() {
           </button>
         )}
         {isChangeEmail && <label htmlFor="newEmail">Введіть код підтвердження з пошти {userEmail}:</label>}
-        {isChangeEmail && <input type="text" onChange={(e) => setUserCode(e.target.value)}/>}
-        {isChangeEmail && <button type="button" onClick={handleVerifyChangeEmailCode} className="bg-green-700 h-10 rounded-xl hover:bg-green-600 transition-colors">Підтвердити код</button>}
-        {!isDisabled && !emailErrors.userEmail && !isChangeEmail && <button 
+        {isChangeEmail && <input type="text" className="border-2 border-amber-50 h-10 rounded-xl p-4 text-black" onChange={(e) => setUserCode(e.target.value)}/>}
+        {isChangeEmail && <button type="button" onClick={handleVerifyChangeEmailCode} className="bg-green-700 md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl hover:bg-green-600 cursor-pointer transition-colors">Підтвердити код</button>}
+        {isButtonDisabled ||isDisabled || !emailErrors.userEmail && <button 
         type="button"
         className="bg-green-700 md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl hover:bg-green-600 cursor-pointer" onClick={getEmailCode}
         >Відправити код підтвердження</button>}
         {/* Кнопка "Змінити" активна тільки якщо емейл верифіковано і поле валідне */}
         <button
           type="submit"
-          disabled={isDisabled && emailErrors.userEmail ? true : false}
+          disabled={isDisabled || emailErrors.userEmail || !isPermittedToChangeEmail || strictDisable ? true : false}
           className={`h-10 rounded-xl my-5 transition-all ${
-            isDisabled && emailErrors.userEmail && isPermittedToChangeEmail
+            isDisabled || emailErrors.userEmail || !isPermittedToChangeEmail || strictDisable
               ? "bg-gray-600 cursor-not-allowed md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl opacity-50"
               : "bg-green-700 md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl hover:bg-green-600 cursor-pointer"
           }`}

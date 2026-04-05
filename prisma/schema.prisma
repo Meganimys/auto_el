@@ -32,6 +32,14 @@ model User {
   application Applications[]
 }
 
+model EmailVerification {
+  id        String   @id @default(cuid())
+  email     String
+  codeHash  String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
 model Product {
   id           Int            @id @default(autoincrement())
   name         String

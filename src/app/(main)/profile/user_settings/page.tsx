@@ -202,9 +202,9 @@ export default function UserSettings() {
     }
   };
 
-  const getEmailCode = async () => {
-    const code = await generateEmailDefenderCode(userEmail as string);
-    setChangeEmailCode(code);
+  const getEmailCode =  () => {
+    //const code = await generateEmailDefenderCode(userEmail as string);
+    //setChangeEmailCode(code);
     setIsChangeEmail(true);
   };
 

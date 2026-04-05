@@ -461,7 +461,7 @@ const canChangeEmail =
       </form>
 
       <Link
-        href={`/pass_change?user=${login}`}
+        href={`pass_change?user=${login}`}
         className="text-center mx-auto block mt-2"
       >
         Змінити пароль

@@ -206,7 +206,6 @@ export default function UserSettings() {
     const code = await generateEmailDefenderCode(userEmail as string);
     setChangeEmailCode(code);
     setIsChangeEmail(true);
-    setIsButtonDisabled(!isButtonDisabled);
   };
 
   const handleVerifyChangeEmailCode = async () => {
@@ -253,6 +252,12 @@ export default function UserSettings() {
 
   const { ref: galleryRef, ...galleryRest } = register("userImage");
   const isDisabled = emailStatus !== "available" || !isVerifyed;
+  const canSendCode =
+  emailStatus === "available" &&
+  !emailErrors.userEmail &&
+  isVerifyed &&
+  !isButtonDisabled;
+
 
   return (
     <div className="p-4 bg-cyan-950 text-amber-100 rounded-t-xl">
@@ -453,13 +458,45 @@ export default function UserSettings() {
             Надіслати код підтвердження
           </button>
         )}
-        {isChangeEmail && <label htmlFor="newEmail">Введіть код підтвердження з пошти {userEmail}:</label>}
-        {isChangeEmail && <input type="text" className="border-2 border-amber-50 h-10 rounded-xl p-4 text-black" onChange={(e) => setUserCode(e.target.value)}/>}
-        {isChangeEmail && <button type="button" onClick={handleVerifyChangeEmailCode} className="bg-green-700 md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl hover:bg-green-600 cursor-pointer transition-colors">Підтвердити код</button>}
-        {isButtonDisabled ||isDisabled || !emailErrors.userEmail && <button 
-        type="button"
-        className="bg-green-700 md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl hover:bg-green-600 cursor-pointer" onClick={getEmailCode}
-        >Відправити код підтвердження</button>}
+        {isChangeEmail && (
+  <div className="flex flex-col gap-y-2 mt-4">
+    <label>
+      Введіть код підтвердження з пошти {userEmail}:
+    </label>
+
+    <input
+      type="text"
+      value={userCode}
+      onChange={(e) => setUserCode(e.target.value)}
+      className="border-2 border-amber-50 h-10 rounded-xl p-4 text-black"
+    />
+
+    <button
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        handleVerifyChangeEmailCode();
+      }}
+      className="bg-green-700 md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl hover:bg-green-600 cursor-pointer active:scale-95 transition-all"
+    >
+      Підтвердити код
+    </button>
+  </div>
+)}
+        {canSendCode && (
+  <button
+    type="button"
+    onClick={(e) => {
+      e.preventDefault();
+      setIsButtonDisabled(true);
+      getEmailCode();
+    }}
+    className="bg-green-700 md:max-w-1/2 md:min-w-1/2 md:mx-auto h-10 rounded-xl hover:bg-green-600 cursor-pointer active:scale-95 transition-all"
+    style={{ position: "relative", zIndex: 10 }}
+  >
+    Відправити код підтвердження
+  </button>
+)}
         {/* Кнопка "Змінити" активна тільки якщо емейл верифіковано і поле валідне */}
         <button
           type="submit"

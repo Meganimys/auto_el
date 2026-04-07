@@ -3,25 +3,132 @@
 import { useSearchParams } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { changeUserPassword } from "@/components/server/getUser";
+import Link from "next/link";
+import { useForm, SubmitHandler } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { getUserEmail } from "@/components/server/lib/prismaManager";
+import EmailVerificationBlock from "@/components/client/EmailVerificationBlock";
 
 export default function PasswordChangePage() {
   const searchParams = useSearchParams();
   const login = searchParams.get("user") || "невідомого користувача";
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
+  const [isChanging, setIsChanging] = useState(false);
+  const [isEmailPermitted, setIsEmailPermitted] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null | undefined>(null);
 
-  if (!user) return <div>Завантаження...</div>;
+
+  useEffect(() => {
+      getEmailFromDataBase();
+    }, []);
+  
+    const getEmailFromDataBase = async () => {
+      setUserEmail(await getUserEmail());
+    };
+  
+
+  const passwordSchema = z
+  .object({
+    currentPassword: z
+          .string()
+          .min(8, "Пароль мінімум 8 символів")
+          .max(25, "Пароль максимум 25 символів")
+          .regex(
+            /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+]).+$/,
+            "Пароль повинен мати одну букву у верхньому регістрі, одну цифру и один спеціальный символ",
+          ),
+    newPassword: z
+          .string()
+          .min(8, "Пароль мінімум 8 символів")
+          .max(25, "Пароль максимум 25 символів")
+          .regex(
+            /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+]).+$/,
+            "Пароль повинен мати одну букву у верхньому регістрі, одну цифру и один спеціальный символ",
+          ),
+  })
+  .required();
+
+type PasswordFormData = z.infer<typeof passwordSchema>;
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<PasswordFormData>({
+    resolver: zodResolver(passwordSchema),
+    mode: "onChange",
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+    },
+  }
+);
+
+  if (!isLoaded) return <div>Завантаження...</div>;
+  if (!user) return <div>Користувач не знайдений</div>;
+
+  const emailStatus = user.primaryEmailAddress;
+  const isVerified = emailStatus?.verification.status === "verified";
+
+  if (!isVerified) {
+    return (
+      <div>
+        Будь ласка,{" "}
+        <Link
+          href="/profile/user_settings"
+          className="text-blue-500 hover:text-blue-300"
+        >
+          підтвердіть
+        </Link>{" "}
+        свою електронну адресу, щоб змінити пароль.
+      </div>
+    );
+  }
 
   return (
     <div>
       <h1 className="pt-20 pb-5 text-center uppercase">Зміна пароля</h1>
-      <p className="pb-5 text-center">Привіт, ви змінюєте пароль для користувача {login}.</p>
+      <p className="pb-5 text-center">
+        Привіт, ви змінюєте пароль для користувача {login}.
+      </p>
       {/* Тут можна додати форму для зміни пароля */}
       <form action="" className="grid grid-cols-1 gap-4 pb-20">
         <label htmlFor="currentPassword">Поточний пароль</label>
-        <input className="min-h-10 border-2 border-amber-50 rounded-xl" id="currentPassword" type="password" />
+        <input
+          className="min-h-10 border-2 border-amber-50 rounded-xl"
+          type="password"
+          {...register("currentPassword")}
+        />
+        {errors.currentPassword && (
+          <p className="text-red-500 text-sm">{errors.currentPassword.message}</p>
+        )}
         <label htmlFor="newPassword">Новий пароль</label>
-        <input className="min-h-10 border-2 border-amber-50 rounded-xl" id="newPassword" type="password" />
-        <button type="submit" className="min-w-1/2 min-h-10 rounded-xl mx-auto bg-green-700">Змінити пароль</button>
+        <input
+          className="min-h-10 border-2 border-amber-50 rounded-xl"
+          type="password"
+          {...register("newPassword")}
+        />
+        {errors.newPassword && (
+          <p className="text-red-500 text-sm">{errors.newPassword.message}</p>
+        )}
+        {errors.currentPassword === undefined && errors.newPassword === undefined && !isEmailPermitted && (<div><EmailVerificationBlock
+            email={userEmail as string} // ✅ СТАРИЙ EMAIL
+            onSuccess={() => {
+              setIsEmailPermitted(true);
+            }}
+          /><p className="text-yellow-400 text-sm">
+            🔐 Підтвердіть старий email для зміни
+          </p></div>)}
+        <button
+          type="submit"
+          disabled={!isEmailPermitted && errors.currentPassword !== undefined && errors.newPassword !== undefined}
+          className={isEmailPermitted && errors.currentPassword === undefined && errors.newPassword === undefined ? `min-w-1/2 min-h-10 rounded-xl mx-auto bg-green-700` : `min-w-1/2 min-h-10 rounded-xl mx-auto bg-gray-500`}
+        >
+          Змінити пароль
+        </button>
       </form>
     </div>
   );

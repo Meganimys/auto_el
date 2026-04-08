@@ -18,7 +18,7 @@ export async function changeUserPassword(FormData: FormData) {
   const { userId } = await auth();
 
   if (!userId) {
-    return { error: "Користувач не автентифікований" };
+    return { result: false, message: "Користувач не автентифікований" };
   }
   try {
     const client = await clerkClient();
@@ -28,13 +28,13 @@ export async function changeUserPassword(FormData: FormData) {
     });
 
     if (!verification.verified) {
-      return { error: "Поточний пароль невірний" };
+      return { result: false, message: "Поточний пароль невірний" };
     }
     await client.users.updateUser(userId, {
       password: newPassword,
     });
-    return { success: true };
+    return { result: true, message: "Пароль успішно змінено" };
   } catch (error: any) {
-    return { error: "Помилка сервера: " + error.message };
+    return { result: false, message: "Помилка сервера: " + error.message };
   }
 }

@@ -32,6 +32,7 @@ export default function UserSettings() {
     "idle" | "checking" | "available" | "taken" | "same"
   >("idle");
   const [isPermittedToChangeEmail, setIsPermittedToChangeEmail] = useState(false);
+  const [changeUserDataResponse, setChangeUserDataResponse] = useState<any>(null);
 
   useEffect(() => {
   setIsPermittedToChangeEmail(false);
@@ -221,7 +222,8 @@ export default function UserSettings() {
     formData.append("userPhone", data.userPhone);
     formData.append("userId", user?.id);
     formData.append("userImage", data.userImage[0] as File); // Додаємо 'as File'
-    await changeUserData(formData);
+     const response = await changeUserData(formData);
+      setChangeUserDataResponse(response);
 
     reset();
     setImgUrls([]);
@@ -340,6 +342,9 @@ const canChangeEmail =
         >
           Змінити інформацію
         </button>
+        {changeUserDataResponse && (
+          <p className="text-green-500">{changeUserDataResponse.message}</p>
+        )}
       </form>
 
       <form

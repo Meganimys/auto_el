@@ -15,9 +15,12 @@ export default function PasswordChangePage() {
   const searchParams = useSearchParams();
   const login = searchParams.get("user") || "невідомого користувача";
   const { user, isLoaded } = useUser();
-  const [isChanging, setIsChanging] = useState(false);
   const [isEmailPermitted, setIsEmailPermitted] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null | undefined>(null);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
 
   useEffect(() => {
@@ -72,6 +75,7 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 
   const emailStatus = user.primaryEmailAddress;
   const isVerified = emailStatus?.verification.status === "verified";
+  const isPasswordNotEmpty = oldPassword !== "" && newPassword !== "";
 
   if (!isVerified) {
     return (
@@ -88,6 +92,30 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
     );
   }
 
+  const onSubmit: SubmitHandler<PasswordFormData> = async (data) => {
+    if (!isEmailPermitted) {
+      alert("Будь ласка, підтвердіть старий email для зміни пароля.");
+      return;
+    }
+    const pass = new FormData();
+    pass.append("currentPassword", data.currentPassword);
+    pass.append("newPassword", data.newPassword);
+    try {
+      const response = await changeUserPassword(pass);
+      if (response.result) {
+        setSuccessMessage(response.message);
+        setErrorMessage("");
+        reset();
+      } else {
+        setErrorMessage(response.message);
+        setSuccessMessage("");
+      }
+    } catch (error) {
+      setErrorMessage("Помилка при зміні пароля: " + (error as Error).message);
+      setSuccessMessage("");
+    }
+  };
+
   return (
     <div>
       <h1 className="pt-20 pb-5 text-center uppercase">Зміна пароля</h1>
@@ -95,12 +123,13 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
         Привіт, ви змінюєте пароль для користувача {login}.
       </p>
       {/* Тут можна додати форму для зміни пароля */}
-      <form action="" className="grid grid-cols-1 gap-4 pb-20">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 pb-20">
         <label htmlFor="currentPassword">Поточний пароль</label>
         <input
           className="min-h-10 border-2 border-amber-50 rounded-xl"
           type="password"
           {...register("currentPassword")}
+          onChange={(e) => setOldPassword(e.target.value)}
         />
         {errors.currentPassword && (
           <p className="text-red-500 text-sm">{errors.currentPassword.message}</p>
@@ -110,11 +139,12 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
           className="min-h-10 border-2 border-amber-50 rounded-xl"
           type="password"
           {...register("newPassword")}
+          onChange={(e) => setNewPassword(e.target.value)}
         />
         {errors.newPassword && (
           <p className="text-red-500 text-sm">{errors.newPassword.message}</p>
         )}
-        {errors.currentPassword === undefined && errors.newPassword === undefined && !isEmailPermitted && (<div><EmailVerificationBlock
+        {errors.currentPassword === undefined && errors.newPassword === undefined && !isEmailPermitted && isPasswordNotEmpty && (<div><EmailVerificationBlock
             email={userEmail as string} // ✅ СТАРИЙ EMAIL
             onSuccess={() => {
               setIsEmailPermitted(true);
@@ -124,11 +154,13 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
           </p></div>)}
         <button
           type="submit"
-          disabled={!isEmailPermitted && errors.currentPassword !== undefined && errors.newPassword !== undefined}
-          className={isEmailPermitted && errors.currentPassword === undefined && errors.newPassword === undefined ? `min-w-1/2 min-h-10 rounded-xl mx-auto bg-green-700` : `min-w-1/2 min-h-10 rounded-xl mx-auto bg-gray-500`}
+          disabled={!isPasswordNotEmpty && !isEmailPermitted && errors.currentPassword !== undefined && errors.newPassword !== undefined}
+          className={isPasswordNotEmpty && isEmailPermitted && errors.currentPassword === undefined && errors.newPassword === undefined ? `min-w-1/2 min-h-10 rounded-xl mx-auto bg-green-700` : `min-w-1/2 min-h-10 rounded-xl mx-auto bg-gray-500`}
         >
           Змінити пароль
         </button>
+        {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+        {successMessage && <p className="text-green-500 text-sm">{successMessage}</p>}
       </form>
     </div>
   );

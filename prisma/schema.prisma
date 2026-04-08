@@ -26,10 +26,25 @@ model User {
   email     String     @unique
   avatarUrl String     @default("/empty-avatar.png")
   createdAt DateTime   @default(now())
+  @@index([createdAt])
   
   // Связь с товарами в корзине
   cart      CartItem[] 
   application Applications[]
+  medalForTime Int? @map("medal_id")
+  medal UserDateTimeAchivement? @relation(fields: [medalForTime], references: [id])
+}
+
+model UserDateTimeAchivement {
+  id Int @id @default(autoincrement())
+  medalName String
+  medalImg String
+  textColor String @default("")
+  textWeight String @default("")
+  textDecoration String @default("")
+  medalDayCount Int @unique
+
+  users User[]
 }
 
 model EmailVerification {

@@ -8,6 +8,10 @@ export async function changeUserData(formData:FormData) {
     const userPhone = formData.get('userPhone') as string;
     const userAvatar = formData.get("userImage") as File;
     const userId = formData.get("userId") as string;
+    const ressult = {message: "Наступні дані були успішно змінені: "};
+    if(userName.length > 2) ressult.message += "Ім'я " + userName + " ";
+    if(userPhone.length > 12) ressult.message += "Телефон " + userPhone + " ";
+    if(userAvatar && userAvatar.size > 0) ressult.message += "Аватар ";
     console.log('File: ', userAvatar);
 
     try {
@@ -43,6 +47,7 @@ export async function changeUserData(formData:FormData) {
   data: { avatarUrl: response.imageUrl }
 });
     }
+        return ressult;
 } catch(err) {
     console.error("При зміні даних виникла помилка: ", err);
 };

@@ -33,6 +33,7 @@ export default function UserSettings() {
   >("idle");
   const [isPermittedToChangeEmail, setIsPermittedToChangeEmail] = useState(false);
   const [changeUserDataResponse, setChangeUserDataResponse] = useState<any>(null);
+  const [showVerification, setShowVerification] = useState(false);
 
   useEffect(() => {
   setIsPermittedToChangeEmail(false);
@@ -367,6 +368,8 @@ const canChangeEmail =
               setNewEmail(val);
               // ВИКОРИСТОВУЙ setEmailValue замість setValue
               setEmailValue("userEmail", val, { shouldValidate: true });
+              setIsPermittedToChangeEmail(false);
+              setShowVerification(false);
             }}
             type="email"
             placeholder="Новий емейл"
@@ -407,22 +410,9 @@ const canChangeEmail =
             Емейл доступний ✅
           </p>
         )}
-    
-        {/* Кнопка "Змінити" активна тільки якщо емейл верифіковано і поле валідне */}
-        <button
-  type="submit"
-  disabled={!canChangeEmail}
-  className={`h-10 rounded-xl my-5 transition-all ${
-    canChangeEmail
-      ? "bg-green-700 hover:bg-green-600 cursor-pointer"
-      : "bg-gray-600 cursor-not-allowed opacity-50"
-  }`}
->
-  Змінити емейл
-</button>
-      </form>
 
-      {isVerifying && (
+        {/* Блок верифікації */}
+        {isVerifying && (
           <div className="flex flex-col gap-y-2 mt-4">
             <label>Введіть код з пошти:</label>
             <input
@@ -442,7 +432,7 @@ const canChangeEmail =
 
         <p className="text-orange-400 text-xs italic">{error}</p>
 
-      {!isVerifyed && !isVerifying && (
+        {!isVerifyed && !isVerifying && (
           <button
             type="button"
             onClick={handleSendEmailCode}
@@ -451,11 +441,24 @@ const canChangeEmail =
             Надіслати код підтвердження
           </button>
         )}
-        {isEmailValid && (
+        {/* КНОПКА запуску */}
+{isEmailValid && !isPermittedToChangeEmail && (
+  <button
+    type="button"
+    onClick={() => setShowVerification(true)}
+    className="bg-yellow-600 h-10 rounded-xl mt-2"
+  >
+    🔐 Підтвердити старий email
+  </button>
+)}
+
+{/* БЛОК підтвердження */}
+{showVerification && (
   <EmailVerificationBlock
-    email={userEmail as string} // ✅ СТАРИЙ EMAIL
+    email={userEmail as string}
     onSuccess={() => {
       setIsPermittedToChangeEmail(true);
+      setShowVerification(false);
     }}
   />
 )}
@@ -464,6 +467,19 @@ const canChangeEmail =
     🔐 Підтвердіть старий email для зміни
   </p>
 )}
+        {/* Кнопка "Змінити" активна тільки якщо емейл верифіковано і поле валідне */}
+        <button
+  type="submit"
+  disabled={!canChangeEmail}
+  className={`h-10 rounded-xl my-5 transition-all ${
+    canChangeEmail
+      ? "bg-green-700 hover:bg-green-600 cursor-pointer"
+      : "bg-gray-600 cursor-not-allowed opacity-50"
+  }`}
+>
+  Змінити емейл
+</button>
+      </form>
 
       <Link
         href={`pass_change?user=${login}`}

@@ -429,7 +429,22 @@ const canChangeEmail =
 
         <p className="text-orange-400 text-xs italic">{error}</p>
 
-        {!isVerifyed && !isVerifying && (
+        
+        {/* Кнопка "Змінити" активна тільки якщо емейл верифіковано і поле валідне */}
+        <button
+  type="submit"
+  disabled={!canChangeEmail}
+  className={`h-10 rounded-xl my-5 transition-all ${
+    canChangeEmail
+      ? "bg-green-700 hover:bg-green-600 cursor-pointer"
+      : "bg-gray-600 cursor-not-allowed opacity-50"
+  }`}
+>
+  Змінити емейл
+</button>
+      </form>
+
+      {!isVerifyed && !isVerifying && (
           <button
             type="button"
             onClick={handleSendEmailCode}
@@ -451,19 +466,6 @@ const canChangeEmail =
     🔐 Підтвердіть старий email для зміни
   </p>
 )}
-        {/* Кнопка "Змінити" активна тільки якщо емейл верифіковано і поле валідне */}
-        <button
-  type="submit"
-  disabled={!canChangeEmail}
-  className={`h-10 rounded-xl my-5 transition-all ${
-    canChangeEmail
-      ? "bg-green-700 hover:bg-green-600 cursor-pointer"
-      : "bg-gray-600 cursor-not-allowed opacity-50"
-  }`}
->
-  Змінити емейл
-</button>
-      </form>
 
       <Link
         href={`pass_change?user=${login}`}

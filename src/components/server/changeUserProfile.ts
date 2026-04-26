@@ -53,25 +53,36 @@ export async function changeUserData(formData:FormData) {
 };
 }
 
-export async function changeUserEmail(formData:FormData) {
-    const userEmail = formData.get('userEmail') as string;
-    const userId = formData.get("userId") as string;
-    try {
-        const client = await clerkClient();
-        if(userEmail.length > 5 && userId) {
-            await client.users.updateUser(userId, {
-                primaryEmailAddressID: userEmail,
-            });
-            const changeEmail = await prisma.user.update({
-                where: {
-                    id: userId,
-                },
-                data: {
-                    email: userEmail,
-                }
-            })
-        }
-    } catch(err) {
-        console.error("При зміні емейлу виникла помилка: ", err);
-    } 
+export async function changeUserEmail(formData: FormData) {
+  const userEmail = formData.get("userEmail") as string;
+  const userId = formData.get("userId") as string;
+
+  try {
+    const client = await clerkClient();
+
+    if (!userEmail || !userId) return;
+
+    // 1. Створюємо новий email
+    const newEmail = await client.emailAddresses.createEmailAddress({
+      userId,
+      emailAddress: userEmail,
+    });
+
+
+    // 2. Робимо primary
+    await client.users.updateUser(userId, {
+      primaryEmailAddressID: newEmail.id,
+    });
+
+    // 3. Оновлюємо БД
+    await prisma.user.update({
+      where: { id: userId },
+      data: { email: userEmail },
+    });
+
+    return { success: true };
+  } catch (err) {
+    console.error("Помилка зміни email:", err);
+    return { success: false, error: String(err) };
+  }
 }

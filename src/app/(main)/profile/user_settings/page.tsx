@@ -39,6 +39,12 @@ export default function UserSettings() {
   setIsPermittedToChangeEmail(false);
 }, [newEmail]);
 
+useEffect(() => {
+  if (isPermittedToChangeEmail) {
+    setShowVerification(false);
+  }
+}, [isPermittedToChangeEmail]);
+
   useEffect(() => {
     getEmailFromDataBase();
   }, []);
@@ -205,6 +211,7 @@ export default function UserSettings() {
 
 
   const onSubmitEmail: SubmitHandler<changeEmailData> = async (data) => {
+    if (!canChangeEmail) return; // ❗ ЗУПИНКА
     if (!user || !data.userEmail) return;
     const formData = new FormData();
     formData.append("userEmail", data.userEmail as string);
@@ -455,6 +462,7 @@ const canChangeEmail =
 {/* БЛОК підтвердження */}
 {showVerification && (
   <EmailVerificationBlock
+    key={userEmail} // ❗ стабілізація
     email={userEmail as string}
     onSuccess={() => {
       setIsPermittedToChangeEmail(true);
@@ -470,6 +478,11 @@ const canChangeEmail =
         {/* Кнопка "Змінити" активна тільки якщо емейл верифіковано і поле валідне */}
         <button
   type="submit"
+  onClick={(e) => {
+    if (!canChangeEmail) {
+      e.preventDefault(); // ❗ стоп сабміт
+    }
+  }}
   disabled={!canChangeEmail}
   className={`h-10 rounded-xl my-5 transition-all ${
     canChangeEmail

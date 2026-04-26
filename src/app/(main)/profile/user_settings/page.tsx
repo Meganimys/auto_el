@@ -407,9 +407,22 @@ const canChangeEmail =
             Емейл доступний ✅
           </p>
         )}
+    
+        {/* Кнопка "Змінити" активна тільки якщо емейл верифіковано і поле валідне */}
+        <button
+  type="submit"
+  disabled={!canChangeEmail}
+  className={`h-10 rounded-xl my-5 transition-all ${
+    canChangeEmail
+      ? "bg-green-700 hover:bg-green-600 cursor-pointer"
+      : "bg-gray-600 cursor-not-allowed opacity-50"
+  }`}
+>
+  Змінити емейл
+</button>
+      </form>
 
-        {/* Блок верифікації */}
-        {isVerifying && (
+      {isVerifying && (
           <div className="flex flex-col gap-y-2 mt-4">
             <label>Введіть код з пошти:</label>
             <input
@@ -428,21 +441,6 @@ const canChangeEmail =
         )}
 
         <p className="text-orange-400 text-xs italic">{error}</p>
-
-        
-        {/* Кнопка "Змінити" активна тільки якщо емейл верифіковано і поле валідне */}
-        <button
-  type="submit"
-  disabled={!canChangeEmail}
-  className={`h-10 rounded-xl my-5 transition-all ${
-    canChangeEmail
-      ? "bg-green-700 hover:bg-green-600 cursor-pointer"
-      : "bg-gray-600 cursor-not-allowed opacity-50"
-  }`}
->
-  Змінити емейл
-</button>
-      </form>
 
       {!isVerifyed && !isVerifying && (
           <button

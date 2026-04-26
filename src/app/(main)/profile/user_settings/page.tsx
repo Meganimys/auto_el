@@ -371,7 +371,13 @@ const canChangeEmail =
       </form>
 
       <form
-        onSubmit={handleSubmitEmail(onSubmitEmail)}
+        onSubmit={(e) => {
+    if (!canChangeEmail) {
+      e.preventDefault();
+      return;
+    }
+    handleSubmitEmail(onSubmitEmail)(e);
+  }}
         className="flex flex-col gap-y-2 md:max-w-2/3 md:mx-auto"
       >
         <label htmlFor="userEmail">Змінити емейл:</label>

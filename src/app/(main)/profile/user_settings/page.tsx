@@ -211,12 +211,27 @@ useEffect(() => {
 
 
   const onSubmitEmail: SubmitHandler<changeEmailData> = async (data) => {
-    if (!canChangeEmail) return; // ❗ ЗУПИНКА
-    if (!user || !data.userEmail) return;
+    console.log("SUBMIT TRIGGERED");
+    if (!canChangeEmail) {
+    console.log("BLOCKED: canChangeEmail = false");
+    return;
+  }
+
+  if (!user || !data.userEmail) {
+    console.log("NO DATA");
+    return;
+  }
     const formData = new FormData();
     formData.append("userEmail", data.userEmail as string);
     formData.append("userId", user?.id);
-    await changeUserEmail(formData);
+    const res = await changeUserEmail(formData);
+
+  console.log("SERVER RESPONSE:", res);
+
+  if (!res?.success) {
+    console.log("FAILED");
+    return;
+  }
     resetEmail();
     getEmailFromDataBase();
     setIsPermittedToChangeEmail(false);

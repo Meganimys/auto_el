@@ -56,6 +56,7 @@ export async function changeUserData(formData:FormData) {
 export async function changeUserEmail(formData: FormData) {
   const userEmail = formData.get("userEmail") as string;
   const userId = formData.get("userId") as string;
+  console.log("Attempting to change email to:", userEmail, "for userId:", userId);
 
   try {
     const client = await clerkClient();

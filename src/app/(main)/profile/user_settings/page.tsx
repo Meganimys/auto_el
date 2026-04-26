@@ -225,7 +225,7 @@ useEffect(() => {
     formData.append("userEmail", data.userEmail as string);
     formData.append("userId", user?.id);
 
-    console.log("Attempting to change email to:", data.userEmail, "for userId:", data.id);
+    console.log("Attempting to change email to:", data.userEmail);
     const res = await changeUserEmail(formData);
 
   console.log("SERVER RESPONSE:", res);
